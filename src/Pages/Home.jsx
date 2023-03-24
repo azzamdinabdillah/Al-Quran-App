@@ -19,7 +19,7 @@ const Home = () => {
     }, [dark])
 
     return (
-        <section className="pt-5 md:px-20">
+        <section className="pt-5 md:px-20 dark:bg-[#040C23]">
             <div className="px-5">
                 <div className="flex justify-between items-center">
                     <div className="flex justify-start items-center gap-5">
