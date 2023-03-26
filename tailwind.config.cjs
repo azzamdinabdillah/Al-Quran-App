@@ -11,6 +11,8 @@ module.exports = {
         // "primary-blue": "#672CBC",
         "primary-blue": "#542E71",
         "dark-blue": "#240F4F",
+        "biru-tua": "#403D58",
+        "biru-muda": "#5BC0EB",
         "light-gray": "#8789A3",
       },
       fontFamily:{

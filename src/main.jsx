@@ -8,6 +8,10 @@ import {
 import Home from './Pages/Home';
 import Surah from './Pages/Surah';
 import App from './App';
+import BottomNavbar from './components/BottomNavbar';
+import Tafsir from './Pages/Tafsir';
+import TafsirDetails from './Pages/TafsirDetails';
+import Saved from './Pages/Saved';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +21,18 @@ const router = createBrowserRouter([
   {
     path:"/surah/:id",
     element:<Surah/>
+  },
+  {
+    path:"/tafsir",
+    element:<Tafsir/>
+  },
+  {
+    path:"/tafsir/:id",
+    element:<TafsirDetails/>
+  },
+  {
+    path:"/saved",
+    element:<Saved/>
   }
 ])
 
