@@ -9,3 +9,14 @@ export const ButtonForGoTop = () => {
     </div>
   );
 };
+
+export const ButtonPrimaryA = (props) => {
+  return (
+    <a
+      href={"#" + props.ayat}
+      className="text-white py-2 px-5 rounded bg-biru-tua dark:bg-biru-muda"
+    >
+      {props.name}
+    </a>
+  );
+};

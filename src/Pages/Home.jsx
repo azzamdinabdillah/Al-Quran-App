@@ -128,7 +128,7 @@ const Home = () => {
                     className=""
                   >
                     <Link
-                      to={`/surah/${row.nomor}`}
+                      to={`/surah/${row.namaLatin}/${row.nomor}/0`}
                       className="my-3 mx-3 hover:bg-slate-50 flex justify-between items-center bg-white p-5 md:gap-10 rounded dark:bg-[#2B303B]"
                     >
                       <div className="flex items-center justify-start gap-5">

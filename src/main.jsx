@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <Home/>
   },
   {
-    path:"/surah/:id",
+    path:"/surah/:namaSurat/:id/:ayatSaved",
     element:<Surah/>
   },
   {
