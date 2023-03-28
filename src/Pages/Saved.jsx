@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Skeleton from "../components/Skeleton";
 import { Link } from "react-router-dom";
+import { GoogleButton } from "react-google-button";
+import { UserAuth } from "../context/AuthContext";
+import { async } from "@firebase/util";
 
 const Saved = () => {
   let [saved, setSaved] = useState([]);
@@ -22,10 +25,22 @@ const Saved = () => {
     });
   }, []);
 
+
+  const { googleSignIn } = UserAuth();
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
       <Navbar imgLeft={"./images/arrow-left.png"} appbarName={"Bookmark"} />
       <section className="pt-24 pb-28">
+        <GoogleButton onClick={handleGoogleSignIn} />
         <div>
           {/* <div className="flex justify-start items-center gap-3">
             <img src="./images/add-saved.png" alt="" className="w-[10%]" />
@@ -84,7 +99,6 @@ const Saved = () => {
           )}
         </div>
       </section>
-      <BottomNavbar />
     </>
   );
 };

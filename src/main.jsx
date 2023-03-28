@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import {
+  BrowserRouter,
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
@@ -13,31 +14,11 @@ import Tafsir from './Pages/Tafsir';
 import TafsirDetails from './Pages/TafsirDetails';
 import Saved from './Pages/Saved';
 
-const router = createBrowserRouter([
-  {
-    path:"/",
-    element: <Home/>
-  },
-  {
-    path:"/surah/:namaSurat/:id/:ayatSaved",
-    element:<Surah/>
-  },
-  {
-    path:"/tafsir",
-    element:<Tafsir/>
-  },
-  {
-    path:"/tafsir/:id",
-    element:<TafsirDetails/>
-  },
-  {
-    path:"/saved",
-    element:<Saved/>
-  }
-])
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
+    <React.StrictMode>
+      {/* <RouterProvider router={router}/> */}
+      <App />
+    </React.StrictMode>
+  </BrowserRouter>
+);

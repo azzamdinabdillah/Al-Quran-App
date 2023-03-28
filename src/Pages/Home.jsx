@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Skeleton from "../components/Skeleton";
 import { motion } from "framer-motion";
-import BottomNavbar from "../components/BottomNavbar";
+import Quran from "/images/quran.png";
+import Alert from "../components/Alert";
+import { newSuratContext } from "../context/SuratContext";
+import { ButtonForGoTop } from "../components/Button";
 
 const Home = () => {
   let [surat, setSurat] = useState([]);
   let [loading, setLoading] = useState(true);
+  let [alert, setAlert] = useState(false);
 
   useEffect(() => {
     fetch("https://equran.id/api/v2/surat")
@@ -15,6 +19,10 @@ const Home = () => {
       .then((data) => setSurat(data.data))
       .finally(() => setLoading(false));
   }, []);
+
+  let savedData = localStorage.getItem("savedData");
+  let finalDataLastRead = JSON.parse(savedData);
+  // console.log(finalDataLastRead);
 
   const variantBox = {
     hidden: {
@@ -40,12 +48,9 @@ const Home = () => {
 
   return (
     <>
+      {alert ? <Alert message={"Berhasil Ditandai"} /> : ""}
       <div>
-        <Navbar
-          linkTo={""}
-          imgLeft={"./images/menu.png"}
-          appbarName={"Surat"}
-        />
+        <Navbar linkTo={""} imgLeft={"/images/menu.png"} appbarName={"Surat"} />
       </div>
       <section className="pt-16 md:px-20 bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
         <div className="px-5">
@@ -76,26 +81,38 @@ const Home = () => {
                   "linear-gradient(139deg, rgba(223,152,250,1) 14%, rgba(144,85,255,0.9753151260504201) 90%)",
               }} */}
 
-            <div className="w-full rounded-lg relative bg-[#542E71]">
-              <div className="p-5">
-                <div className="flex gap-3 items-center">
-                  <img src="./images/small-book.png" alt="" />
-                  <p className="text-white font-medium">Last Read</p>
-                </div>
+            <Link
+              to={`/surah/${finalDataLastRead.surat}/${finalDataLastRead.idSurat}/${finalDataLastRead.ayat}`}
+              className=""
+            >
+              <div className="w-full rounded-lg relative bg-[#542E71]">
+                <div className="p-5">
+                  <div className="flex gap-3 items-center">
+                    <img src="/images/small-book.png" alt="" />
+                    <p className="text-white font-medium">Last Read</p>
+                  </div>
 
-                <div className="mt-8">
-                  <h1 className="font-semibold text-white text-xl">
-                    Al-Fatihah
-                  </h1>
-                  <p className="text-white mt-2">Ayat No 1</p>
+                  {(finalDataLastRead != null) ? <div className="mt-8">
+                    <h1 className="font-semibold text-white text-xl">
+                      {finalDataLastRead.surat}
+                    </h1>
+                    <p className="text-white mt-2">
+                      Ayat No {finalDataLastRead.ayat}
+                    </p>
+                  </div> : <div className="mt-8">
+                    <h1 className="font-semibold text-white text-xl">
+                      Belum ada data
+                    </h1>
+                    <p className="text-white mt-2">
+                      Ayat No 0
+                    </p>
+                  </div> }
+
+                  
                 </div>
+                <img src={Quran} alt="" className="absolute bottom-0 right-0" />
               </div>
-              <img
-                src="./images/quran.png"
-                alt=""
-                className="absolute bottom-0 right-0"
-              />
-            </div>
+            </Link>
           </motion.div>
         </div>
 
@@ -133,7 +150,7 @@ const Home = () => {
                     >
                       <div className="flex items-center justify-start gap-5">
                         <div className="relative inline-block">
-                          <img src="./images/nomer-surat.png" alt="" />
+                          <img src="/images/nomer-surat.png" alt="" />
                           <p className="text-dark-blue dark:text-white font-bold absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 text-xs">
                             {row.nomor}
                           </p>
@@ -157,8 +174,10 @@ const Home = () => {
             )}
           </div>
         </div>
-        <BottomNavbar/>
       </section>
+      <div className="fixed z-40 bottom-24 left-5">
+        <ButtonForGoTop />
+      </div>
     </>
   );
 };

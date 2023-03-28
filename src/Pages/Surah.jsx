@@ -2,16 +2,19 @@ import ArrowLeft from "/images/arrow-left.png";
 import Book from "/images/quran.png";
 import Bismillah from "/images/bismillah.png";
 import Bookmark from "/images/bookmark.png";
-import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { AiOutlinePaperClip } from "react-icons/ai";
+import { BsFillBookmarkFill } from "react-icons/bs";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { SkeletonDetails } from "../components/Skeleton";
 import { motion } from "framer-motion";
-import BottomNavbar from "../components/BottomNavbar";
 import { ButtonForGoTop, ButtonPrimaryA } from "../components/Button";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
 import Alert from "../components/Alert";
+import Home from "./Home";
+import { newSuratContext } from "../context/SuratContext";
 
 const Surah = () => {
   let [data, setData] = useState([]);
@@ -22,8 +25,33 @@ const Surah = () => {
   let [loncatAyat, setLoncatAyat] = useState("");
   let [savedAyat, setSavedAyat] = useState("");
   let [alert, setAlert] = useState(false);
+  let { lastRead, setLastRead } = newSuratContext();
 
   let [openModalFromSaved, setOpenModalFromSaved] = useState(false);
+
+  const navigasi = useNavigate();
+
+  const lastReadHandler = () => {
+    // mendapatkan data dari localStorage
+    let savedData = localStorage.getItem("savedData");
+
+    // mengubah data string menjadi objek JSON
+    savedData = savedData ? JSON.parse(savedData) : {};
+
+    // menambahkan data baru ke objek savedData
+    savedData.surat = namaSurat;
+    savedData.ayat = savedAyat;
+    savedData.idSurat = id;
+    console.log(savedData);
+
+    // menyimpan kembali data ke localStorage
+    localStorage.setItem("savedData", JSON.stringify(savedData));
+
+    setAlert(true);
+    setTimeout(() => {
+      setAlert(false);
+    }, 5000);
+  };
 
   useEffect(() => {
     fetch(`https://equran.id/api/v2/surat/${id}`)
@@ -36,14 +64,14 @@ const Surah = () => {
       .then((finalData) => setAyat(finalData.data.ayat))
       .finally(() => setLoading(false));
 
-    (ayatSaved >= 1) ? setOpenModalFromSaved(true) : "";
+    ayatSaved >= 1 ? setOpenModalFromSaved(true) : "";
 
     setTimeout(() => {
       setOpenModalFromSaved(false);
     }, 10000);
   }, []);
 
-  console.log(openModalFromSaved);
+  // console.log(openModalFromSaved);
 
   let loncatAyatHandler = (even) => {
     setLoncatAyat(even.target.value);
@@ -97,13 +125,18 @@ const Surah = () => {
         >
           <div className="relative">
             <div className="px-5 py-10">
-              <h1 className="text-center font-medium text-lg">Lanjutkan Membaca? </h1>
+              <h1 className="text-center font-medium text-lg">
+                Lanjutkan Membaca?{" "}
+              </h1>
               <div className="flex justify-center items-center gap-5 mt-5">
-                <button onClick={() => setOpenModalFromSaved(false)} className="underline">
+                <button
+                  onClick={() => setOpenModalFromSaved(false)}
+                  className="underline"
+                >
                   Tidak
                 </button>
                 <div onClick={() => setOpenModalFromSaved(false)}>
-                <ButtonPrimaryA name={"Lanjutkan"} ayat={ayatSaved} />
+                  <ButtonPrimaryA name={"Lanjutkan"} ayat={ayatSaved} />
                 </div>
               </div>
             </div>
@@ -115,11 +148,11 @@ const Surah = () => {
 
       {/* modal */}
       <motion.div
-        className="w-full z-50 fixed bottom-0 bg-[#EAF2EF] "
+        className="w-full rounded-t-3xl z-50 fixed bottom-0 bg-[#EAF2EF] "
         animate={
           open
             ? {
-                height: "30vh",
+                height: "40vh",
                 overflow: "hidden",
               }
             : {
@@ -151,21 +184,32 @@ const Surah = () => {
               onClick={savedHandler}
               className="bg-white rounded py-3 px-3 flex justify-start items-center gap-3"
             >
-              <img src={Bookmark} alt="" className="scale-125" />
+              <BsFillBookmarkFill size={25} />
               <h1 className="text-primary-blue font-medium">Simpan Ayat ini</h1>
+            </button>
+            <button
+              onClick={lastReadHandler}
+              className="bg-white rounded py-3 px-3 flex justify-start items-center gap-3"
+            >
+              <AiOutlinePaperClip size={25} />
+              <h1 className="text-primary-blue font-medium">
+                Tandai Terakhir Baca
+              </h1>
             </button>
           </div>
         </div>
       </motion.div>
 
-      {alert ? <Alert /> : ""}
+      {alert ? <Alert message={"Berhasil ditambahkan"} /> : ""}
 
       <section
-      onClick={() => {
-        (open) ? setOpen(false) : ""
-      }}
+        onClick={() => {
+          open ? setOpen(false) : "";
+        }}
         id="top"
-        className={open || openModalFromSaved ? "blur-sm z-30" : "blur-none z-30"}
+        className={
+          open || openModalFromSaved ? "blur-sm z-30 brightness-75" : "blur-none z-30"
+        }
       >
         <div className="">
           <Navbar
@@ -298,7 +342,6 @@ const Surah = () => {
       <div className="fixed z-40 bottom-24 left-5">
         <ButtonForGoTop />
       </div>
-      <BottomNavbar />
     </>
   );
 };
