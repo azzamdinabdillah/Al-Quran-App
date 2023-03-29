@@ -5,13 +5,11 @@ import Skeleton from "../components/Skeleton";
 import { motion } from "framer-motion";
 import Quran from "/images/quran.png";
 import Alert from "../components/Alert";
-import { newSuratContext } from "../context/SuratContext";
 import { ButtonForGoTop } from "../components/Button";
 
 const Home = () => {
   let [surat, setSurat] = useState([]);
   let [loading, setLoading] = useState(true);
-  let [alert, setAlert] = useState(false);
 
   useEffect(() => {
     fetch("https://equran.id/api/v2/surat")
@@ -48,11 +46,11 @@ const Home = () => {
 
   return (
     <>
-      {alert ? <Alert message={"Berhasil Ditandai"} /> : ""}
-      <div>
+    <div className="md:px-10">
+      <div className="">
         <Navbar linkTo={""} imgLeft={"/images/menu.png"} appbarName={"Surat"} />
       </div>
-      <section className="pt-16 md:px-20 bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
+      <section className="pt-16 w-full bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
         <div className="px-5">
           <motion.div
             animate={{
@@ -92,23 +90,23 @@ const Home = () => {
                     <p className="text-white font-medium">Last Read</p>
                   </div>
 
-                  {(finalDataLastRead != null) ? <div className="mt-8">
-                    <h1 className="font-semibold text-white text-xl">
-                      {finalDataLastRead.surat}
-                    </h1>
-                    <p className="text-white mt-2">
-                      Ayat No {finalDataLastRead.ayat}
-                    </p>
-                  </div> : <div className="mt-8">
-                    <h1 className="font-semibold text-white text-xl">
-                      Belum ada data
-                    </h1>
-                    <p className="text-white mt-2">
-                      Ayat No 0
-                    </p>
-                  </div> }
-
-                  
+                  {finalDataLastRead !== null ? (
+                    <div className="mt-8">
+                      <h1 className="font-semibold text-white text-xl">
+                        {finalDataLastRead.surat}
+                      </h1>
+                      <p className="text-white mt-2">
+                        Ayat No {finalDataLastRead.ayat}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="mt-8">
+                      <h1 className="font-semibold text-white text-xl">
+                        Belum ada data
+                      </h1>
+                      <p className="text-white mt-2">Ayat No 0</p>
+                    </div>
+                  )}
                 </div>
                 <img src={Quran} alt="" className="absolute bottom-0 right-0" />
               </div>
@@ -139,6 +137,7 @@ const Home = () => {
               >
                 {surat.map((row) => (
                   <motion.div
+                    key={row.nomor}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     variants={variantList}
@@ -175,6 +174,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+    </div>
       <div className="fixed z-40 bottom-24 left-5">
         <ButtonForGoTop />
       </div>

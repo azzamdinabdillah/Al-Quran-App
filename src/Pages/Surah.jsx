@@ -10,11 +10,11 @@ import Navbar from "../components/Navbar";
 import { SkeletonDetails } from "../components/Skeleton";
 import { motion } from "framer-motion";
 import { ButtonForGoTop, ButtonPrimaryA } from "../components/Button";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import Alert from "../components/Alert";
-import Home from "./Home";
-import { newSuratContext } from "../context/SuratContext";
+import { NewMainContext } from "../context/SuratContext";
+import { FiFolder } from "react-icons/fi";
 
 const Surah = () => {
   let [data, setData] = useState([]);
@@ -25,9 +25,33 @@ const Surah = () => {
   let [loncatAyat, setLoncatAyat] = useState("");
   let [savedAyat, setSavedAyat] = useState("");
   let [alert, setAlert] = useState(false);
-  let { lastRead, setLastRead } = newSuratContext();
+  let { lastRead, setLastRead } = NewMainContext();
+  let [folder, setFolder] = useState([]);
+  let [chooseFolder, setChooseFolder] = useState(false);
 
   let [openModalFromSaved, setOpenModalFromSaved] = useState(false);
+
+  // breakpoint framer motion
+  const breakpoints = {
+    mobile: 0,
+    tablet: 768,
+    dekstop: 1024,
+  };
+
+  const lebarLayar = window.innerWidth;
+
+  const animateProps = {
+    mobile: {
+      height: "40vh",
+    },
+    tablet: {
+      height: "30vh",
+    },
+    dekstop: {
+      height: "100vh",
+    },
+  };
+  // end breakpoints framer motion
 
   const navigasi = useNavigate();
 
@@ -42,7 +66,6 @@ const Surah = () => {
     savedData.surat = namaSurat;
     savedData.ayat = savedAyat;
     savedData.idSurat = id;
-    console.log(savedData);
 
     // menyimpan kembali data ke localStorage
     localStorage.setItem("savedData", JSON.stringify(savedData));
@@ -69,6 +92,16 @@ const Surah = () => {
     setTimeout(() => {
       setOpenModalFromSaved(false);
     }, 10000);
+
+    let collectionRef = collection(db, "folder");
+
+    getDocs(collectionRef).then((response) => {
+      let arr = [];
+      response.forEach((doc) => {
+        arr.push({ ...doc.data(), id: doc.id });
+      });
+      setFolder(arr);
+    });
   }, []);
 
   // console.log(openModalFromSaved);
@@ -82,6 +115,7 @@ const Surah = () => {
       ayat: savedAyat,
       surat: namaSurat,
       idSurat: id,
+      folder: "alquran",
     });
     if (addDoc) {
       setAlert(true);
@@ -146,20 +180,92 @@ const Surah = () => {
         ""
       )}
 
+      {/* modal choose folder*/}
+      {chooseFolder === true ? (
+        <motion.div
+          className="w-[80%] left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
+          animate={
+            chooseFolder
+              ? {
+                  opacity: 1,
+                  overflow: "hidden",
+                }
+              : {
+                  opacity: 0,
+                  overflow: "hidden",
+                }
+          }
+          initial={
+            chooseFolder
+              ? {
+                  opacity: 0,
+                  overflow: "hidden",
+                }
+              : {
+                  opacity: 0,
+                  overflow: "hidden",
+                }
+          }
+        >
+          <div className="relative">
+            <div className="px-5 py-10">
+              <h1 className="text-center font-medium text-lg">Pilih Folder</h1>
+              <div className="px-1 py-5 flex flex-col gap-5">
+                {folder.map((row) => (
+                  <button
+                    onClick={() => {
+                      addDoc(collection(db, "saved"), {
+                        ayat: savedAyat,
+                        surat: namaSurat,
+                        idSurat: id,
+                        folder: row.folderName,
+                      });
+                      if (addDoc) {
+                        setAlert(true);
+                        setTimeout(() => {
+                          setAlert(false);
+                        }, 5000);
+                        setChooseFolder(false);
+                      } else {
+                        return alert("Gagal");
+                      }
+                    }}
+                    className="bg-white rounded py-3 px-3 flex justify-start items-center gap-3"
+                  >
+                    <FiFolder size={25} />
+                    <h1 className="text-primary-blue font-medium">
+                      {row.folderName}
+                    </h1>
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => setChooseFolder(false)}
+                className="underline"
+              >
+                Batal
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      ) : (
+        ""
+      )}
+
       {/* modal */}
       <motion.div
-        className="w-full rounded-t-3xl z-50 fixed bottom-0 bg-[#EAF2EF] "
+        className="w-full md:w-[60%] rounded-t-3xl z-50 fixed bottom-0 md:left-1/2 md:-translate-x-1/2 bg-[#EAF2EF] "
         animate={
           open
-            ? {
-                height: "40vh",
-                overflow: "hidden",
-              }
+            ? lebarLayar >= 768 && lebarLayar <= 1024
+              ? animateProps.tablet
+              : animateProps.mobile
             : {
                 height: 0,
-                overflow: "hidden",
               }
         }
+        layout
+        variants={breakpoints}
         initial={
           open
             ? {
@@ -181,7 +287,7 @@ const Surah = () => {
           /> */}
           <div className="px-5 py-5 flex flex-col gap-5">
             <button
-              onClick={savedHandler}
+              onClick={() => setChooseFolder(true)}
               className="bg-white rounded py-3 px-3 flex justify-start items-center gap-3"
             >
               <BsFillBookmarkFill size={25} />
@@ -208,7 +314,9 @@ const Surah = () => {
         }}
         id="top"
         className={
-          open || openModalFromSaved ? "blur-sm z-30 brightness-75" : "blur-none z-30"
+          open || openModalFromSaved
+            ? "blur-sm z-30 brightness-75"
+            : "blur-none z-30"
         }
       >
         <div className="">

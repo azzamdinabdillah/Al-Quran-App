@@ -9,10 +9,6 @@ import {
 import Home from './Pages/Home';
 import Surah from './Pages/Surah';
 import App from './App';
-import BottomNavbar from './components/BottomNavbar';
-import Tafsir from './Pages/Tafsir';
-import TafsirDetails from './Pages/TafsirDetails';
-import Saved from './Pages/Saved';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>

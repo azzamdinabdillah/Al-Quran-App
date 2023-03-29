@@ -1,28 +1,19 @@
 import { useContext, createContext, useState, useEffect } from "react";
 
-const suratContext = createContext();
+const MainContext = createContext();
 
-export const SuratAppProvider = ({children}) => {
+export const MainAppProvider = ({children}) => {
 
     let [lastRead, setLastRead] = useState({});
     let [dataLastRead, setDataLastRead] = useState({})
 
-    // useEffect(() => {
-    //     const storedData = JSON.parse(localStorage.getItem(lastRead))
-    //     setDataLastRead(storedData);
-    // }, [])
-
-    const halo = () => {
-        alert("asdadasd")
-    }
-
     return (
-        <suratContext.Provider value={{ lastRead, setLastRead, halo }}>
+        <MainContext.Provider value={{ lastRead, setLastRead }}>
             {children}
-        </suratContext.Provider>
+        </MainContext.Provider>
     )
 }
 
-export const newSuratContext = () => {
-    return useContext(suratContext)
+export const NewMainContext = () => {
+    return useContext(MainContext)
 }
