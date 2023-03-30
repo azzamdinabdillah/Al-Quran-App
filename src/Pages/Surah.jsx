@@ -10,71 +10,44 @@ import Navbar from "../components/Navbar";
 import { SkeletonDetails } from "../components/Skeleton";
 import { motion } from "framer-motion";
 import { ButtonForGoTop, ButtonPrimaryA } from "../components/Button";
-import { addDoc, collection, getDoc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase";
-import Alert from "../components/Alert";
-import { NewMainContext } from "../context/SuratContext";
 import { FiFolder } from "react-icons/fi";
+import {
+  ModalFromSaved,
+  ModalMenu,
+  ModalMenuFolder,
+} from "../components/Modal";
+import { NewMainContext } from "../context/MainContext";
+import Alert from "../components/Alert";
 
 const Surah = () => {
   let [data, setData] = useState([]);
   let [ayat, setAyat] = useState([]);
   let { namaSurat, id, ayatSaved } = useParams();
   let [loading, setLoading] = useState(true);
-  let [open, setOpen] = useState(false);
   let [loncatAyat, setLoncatAyat] = useState("");
   let [savedAyat, setSavedAyat] = useState("");
-  let [alert, setAlert] = useState(false);
   let { lastRead, setLastRead } = NewMainContext();
   let [folder, setFolder] = useState([]);
-  let [chooseFolder, setChooseFolder] = useState(false);
 
-  let [openModalFromSaved, setOpenModalFromSaved] = useState(false);
-
-  // breakpoint framer motion
-  const breakpoints = {
-    mobile: 0,
-    tablet: 768,
-    dekstop: 1024,
-  };
-
-  const lebarLayar = window.innerWidth;
-
-  const animateProps = {
-    mobile: {
-      height: "40vh",
-    },
-    tablet: {
-      height: "30vh",
-    },
-    dekstop: {
-      height: "100vh",
-    },
-  };
-  // end breakpoints framer motion
-
-  const navigasi = useNavigate();
-
-  const lastReadHandler = () => {
-    // mendapatkan data dari localStorage
-    let savedData = localStorage.getItem("savedData");
-
-    // mengubah data string menjadi objek JSON
-    savedData = savedData ? JSON.parse(savedData) : {};
-
-    // menambahkan data baru ke objek savedData
-    savedData.surat = namaSurat;
-    savedData.ayat = savedAyat;
-    savedData.idSurat = id;
-
-    // menyimpan kembali data ke localStorage
-    localStorage.setItem("savedData", JSON.stringify(savedData));
-
-    setAlert(true);
-    setTimeout(() => {
-      setAlert(false);
-    }, 5000);
-  };
+  let {
+    open,
+    setOpen,
+    chooseFolder,
+    setChooseFolder,
+    alert,
+    setAlert,
+    setOpenModalFromSaved,
+    openModalFromSaved,
+  } = NewMainContext();
 
   useEffect(() => {
     fetch(`https://equran.id/api/v2/surat/${id}`)
@@ -94,8 +67,9 @@ const Surah = () => {
     }, 10000);
 
     let collectionRef = collection(db, "folder");
+    let collectionQuery = query(collectionRef, where("list", "==", "alquran"));
 
-    getDocs(collectionRef).then((response) => {
+    getDocs(collectionQuery).then((response) => {
       let arr = [];
       response.forEach((doc) => {
         arr.push({ ...doc.data(), id: doc.id });
@@ -110,216 +84,52 @@ const Surah = () => {
     setLoncatAyat(even.target.value);
   };
 
-  let savedHandler = async () => {
-    await addDoc(collection(db, "saved"), {
-      ayat: savedAyat,
-      surat: namaSurat,
-      idSurat: id,
-      folder: "alquran",
-    });
-    if (addDoc) {
-      setAlert(true);
-      setTimeout(() => {
-        setAlert(false);
-      }, 5000);
-    } else {
-      return alert("Gagal");
-    }
-  };
   // console.log(savedAyat);
 
   return (
     <>
       {/* modal from saved */}
       {openModalFromSaved === true ? (
-        <motion.div
-          className="w-[80%] left-1/2 -translate-x-1/2 mx-auto z-50 fixed top-1/2 -translate-y-1/2 bg-[#EAF2EF] rounded-lg"
-          animate={
-            openModalFromSaved
-              ? {
-                  opacity: 1,
-                  overflow: "hidden",
-                }
-              : {
-                  opacity: 0,
-                  overflow: "hidden",
-                }
-          }
-          initial={
-            openModalFromSaved
-              ? {
-                  opacity: 0,
-                  overflow: "hidden",
-                }
-              : {
-                  opacity: 0,
-                  overflow: "hidden",
-                }
-          }
-        >
-          <div className="relative">
-            <div className="px-5 py-10">
-              <h1 className="text-center font-medium text-lg">
-                Lanjutkan Membaca?{" "}
-              </h1>
-              <div className="flex justify-center items-center gap-5 mt-5">
-                <button
-                  onClick={() => setOpenModalFromSaved(false)}
-                  className="underline"
-                >
-                  Tidak
-                </button>
-                <div onClick={() => setOpenModalFromSaved(false)}>
-                  <ButtonPrimaryA name={"Lanjutkan"} ayat={ayatSaved} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+        <ModalFromSaved linkList={ayatSaved} />
       ) : (
         ""
       )}
 
       {/* modal choose folder*/}
       {chooseFolder === true ? (
-        <motion.div
-          className="w-[80%] left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
-          animate={
-            chooseFolder
-              ? {
-                  opacity: 1,
-                  overflow: "hidden",
-                }
-              : {
-                  opacity: 0,
-                  overflow: "hidden",
-                }
-          }
-          initial={
-            chooseFolder
-              ? {
-                  opacity: 0,
-                  overflow: "hidden",
-                }
-              : {
-                  opacity: 0,
-                  overflow: "hidden",
-                }
-          }
-        >
-          <div className="relative">
-            <div className="px-5 py-10">
-              <h1 className="text-center font-medium text-lg">Pilih Folder</h1>
-              <div className="px-1 py-5 flex flex-col gap-5">
-                {folder.map((row) => (
-                  <button
-                    onClick={() => {
-                      addDoc(collection(db, "saved"), {
-                        ayat: savedAyat,
-                        surat: namaSurat,
-                        idSurat: id,
-                        folder: row.folderName,
-                      });
-                      if (addDoc) {
-                        setAlert(true);
-                        setTimeout(() => {
-                          setAlert(false);
-                        }, 5000);
-                        setChooseFolder(false);
-                      } else {
-                        return alert("Gagal");
-                      }
-                    }}
-                    className="bg-white rounded py-3 px-3 flex justify-start items-center gap-3"
-                  >
-                    <FiFolder size={25} />
-                    <h1 className="text-primary-blue font-medium">
-                      {row.folderName}
-                    </h1>
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={() => setChooseFolder(false)}
-                className="underline"
-              >
-                Batal
-              </button>
-            </div>
-          </div>
-        </motion.div>
+        <ModalMenuFolder
+          savedTafsir={savedAyat}
+          namaSurat={namaSurat}
+          idTafsir={id}
+          whereList={"alquran"}
+        />
       ) : (
         ""
       )}
 
       {/* modal */}
-      <motion.div
-        className="w-full md:w-[60%] rounded-t-3xl z-50 fixed bottom-0 md:left-1/2 md:-translate-x-1/2 bg-[#EAF2EF] "
-        animate={
-          open
-            ? lebarLayar >= 768 && lebarLayar <= 1024
-              ? animateProps.tablet
-              : animateProps.mobile
-            : {
-                height: 0,
-              }
-        }
-        layout
-        variants={breakpoints}
-        initial={
-          open
-            ? {
-                height: 0,
-                overflow: "hidden",
-              }
-            : {
-                height: 0,
-                overflow: "hidden",
-              }
-        }
-      >
-        <div className="relative">
-          {/* <img
-            onClick={() => setOpen(false)}
-            src={Close}
-            alt=""
-            className="absolute right-0 top-0 p-3 scale-50"
-          /> */}
-          <div className="px-5 py-5 flex flex-col gap-5">
-            <button
-              onClick={() => setChooseFolder(true)}
-              className="bg-white rounded py-3 px-3 flex justify-start items-center gap-3"
-            >
-              <BsFillBookmarkFill size={25} />
-              <h1 className="text-primary-blue font-medium">Simpan Ayat ini</h1>
-            </button>
-            <button
-              onClick={lastReadHandler}
-              className="bg-white rounded py-3 px-3 flex justify-start items-center gap-3"
-            >
-              <AiOutlinePaperClip size={25} />
-              <h1 className="text-primary-blue font-medium">
-                Tandai Terakhir Baca
-              </h1>
-            </button>
-          </div>
-        </div>
-      </motion.div>
+      <ModalMenu
+        menu1={"Ayat"}
+        namaSurat={namaSurat}
+        savedSurat={savedAyat}
+        id={id}
+      />
 
       {alert ? <Alert message={"Berhasil ditambahkan"} /> : ""}
 
       <section
         onClick={() => {
           open ? setOpen(false) : "";
+          chooseFolder ? setChooseFolder(false) : "";
         }}
         id="top"
         className={
           open || openModalFromSaved
-            ? "blur-sm z-30 brightness-75"
+            ? "blur-sm z-30 brightness-50"
             : "blur-none z-30"
         }
       >
-        <div className="">
+        <div className="md:px-10">
           <Navbar
             linkTo={"/"}
             imgLeft={ArrowLeft}

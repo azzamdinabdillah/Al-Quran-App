@@ -50,12 +50,14 @@ const Tafsir = () => {
     //   <BottomNavbar />
     // </section>
     <>
+    <div className="md:px-10">
       <Navbar
         appbarName={"Tafsir Surat"}
         imgLeft={"./images/arrow-left.png"}
         linkTo={"/"}
       />
-      <section className="pt-10 md:px-20 bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
+    </div>
+      <section className="pt-10 md:px-10 bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
         <div className="px-5">
           <motion.div
             animate={{
@@ -117,7 +119,7 @@ const Tafsir = () => {
               </div>
             ) : (
               <motion.div
-                className="md:grid grid-cols-2 lg:grid-cols-3"
+                className="md:grid grid-cols-2 lg:grid-cols-3 justify-start items-start"
                 initial="hidden"
                 animate="visible"
                 variants={variantBox}
@@ -130,7 +132,7 @@ const Tafsir = () => {
                     className=""
                   >
                     <Link
-                      to={`/tafsir/${row.nomor}`}
+                      to={`/tafsir/${row.namaLatin}/${row.nomor}/0`}
                       className="my-3 mx-3 hover:bg-slate-50 flex justify-between items-center bg-white p-5 md:gap-10 rounded dark:bg-[#2B303B]"
                     >
                       <div className="flex items-center justify-start gap-5">

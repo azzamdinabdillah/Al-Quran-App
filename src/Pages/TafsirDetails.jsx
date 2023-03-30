@@ -7,12 +7,53 @@ import Navbar from "../components/Navbar";
 import { SkeletonDetails } from "../components/Skeleton";
 import { motion } from "framer-motion";
 import BottomNavbar from "../components/BottomNavbar";
+import { AiOutlinePaperClip } from "react-icons/ai";
+import { BsFillBookmarkFill } from "react-icons/bs";
+import {
+  ModalFromSaved,
+  ModalMenu,
+  ModalMenuFolder,
+} from "../components/Modal";
+import { NewMainContext } from "../context/MainContext";
+import Alert from "../components/Alert";
 
 const TafsirDetails = () => {
   let [data, setData] = useState([]);
   let [tafsir, setTafsir] = useState([]);
-  let { id } = useParams();
+  let { namaSurat, id, tafsirSaved } = useParams();
+  let [savedTafsir, setSavedTafsir] = useState("");
   let [loading, setLoading] = useState(true);
+  let {
+    open,
+    setOpen,
+    chooseFolder,
+    setChooseFolder,
+    alert,
+    setAlert,
+    setOpenModalFromSaved,
+    openModalFromSaved,
+  } = NewMainContext();
+
+  const lastReadHandler = () => {
+    // mendapatkan data dari localStorage
+    let savedData = localStorage.getItem("savedData");
+
+    // mengubah data string menjadi objek JSON
+    savedData = savedData ? JSON.parse(savedData) : {};
+
+    // menambahkan data baru ke objek savedData
+    savedData.surat = namaSurat;
+    savedData.ayat = savedAyat;
+    savedData.idSurat = id;
+
+    // menyimpan kembali data ke localStorage
+    localStorage.setItem("savedData", JSON.stringify(savedData));
+
+    setAlert(true);
+    setTimeout(() => {
+      setAlert(false);
+    }, 5000);
+  };
 
   useEffect(() => {
     fetch(`https://equran.id/api/v2/tafsir/${id}`)
@@ -24,26 +65,64 @@ const TafsirDetails = () => {
       .then((response) => response.json())
       .then((finalData) => setTafsir(finalData.data.tafsir))
       .finally(() => setLoading(false));
+
+    tafsirSaved >= 1 ? setOpenModalFromSaved(true) : "";
+
+    setTimeout(() => {
+      setOpenModalFromSaved(false);
+    }, 10000);
   }, []);
 
   return (
     <>
+      {alert ? <Alert message={"Berhasil ditambahkan"} /> : ""}
+
+      {/* modal choose folder*/}
+      {chooseFolder === true ? (
+        <ModalMenuFolder
+          savedTafsir={savedTafsir}
+          namaSurat={namaSurat}
+          idTafsir={id}
+          whereList={"tafsir"}
+        />
+      ) : (
+        ""
+      )}
+
+      {/* modal from saved */}
+      {openModalFromSaved === true ? <ModalFromSaved linkList={tafsirSaved} /> : ""}
+
+      {/* modal bottom menu */}
+      <ModalMenu menu1={"Tafsir"} />
+
       <div className="">
         {loading ? (
-            <div className="mx-10 my-10">
-                <div className="bg-slate-200 w-full mt-3 py-2 rounded-full"></div>
-            </div>
+          <div className="mx-10 my-10">
+            <div className="bg-slate-200 w-full mt-3 py-2 rounded-full"></div>
+          </div>
         ) : (
-            <div className="pb-10">
-                <Navbar
-                  linkTo={"/"}
-                  imgLeft={ArrowLeft}
-                  appbarName={data.namaLatin}
-                />
-            </div>
+          <div className="pb-10 md:px-10">
+            <Navbar
+              linkTo={"/"}
+              imgLeft={ArrowLeft}
+              appbarName={data.namaLatin}
+            />
+          </div>
         )}
       </div>
-      <section className="px-3 pb-5 md:px-20 pt-10 bg-[#EAF2EF] dark:bg-[#2F243A]">
+      <section
+        onClick={() => {
+          open ? setOpen(false) : "";
+          chooseFolder ? setChooseFolder(false) : "";
+        }}
+        id="top"
+        className={
+          open || openModalFromSaved
+            ? "blur-sm z-30 brightness-50 px-3 pt-5 mt-5"
+            : "blur-none z-30 px-3 pt-5 mt-5"
+        }
+      >
+        {/* <section className="px-3 pt-5 mt-5"> */}
         <div>
           {loading ? (
             <SkeletonDetails />
@@ -97,8 +176,16 @@ const TafsirDetails = () => {
               className="md:grid md:grid-cols-2 gap-x-3"
             >
               {tafsir.map((row) => (
-                <div className="">
-                  <div className="w-full bg-white dark:bg-[#2B303B] mt-3 py-7 px-5 rounded-md ">
+                <div
+                id={row.ayat}
+                  key={row.id}
+                  onClick={() => {
+                    setOpen(true);
+                    setSavedTafsir(row.ayat);
+                  }}
+                  className=""
+                >
+                  <div className="w-full bg-white hover:bg-opacity-70 dark:bg-[#2B303B] mt-3 py-7 px-5 rounded-md ">
                     <div className="">
                       <div className="flex justify-between items-center">
                         <p className="bg-[#403D58] dark:bg-[#5BC0EB] dark:text-black font-medium text-white px-3 py-1 rounded-md">
@@ -116,7 +203,7 @@ const TafsirDetails = () => {
           )}
         </div>
       </section>
-        <BottomNavbar/>
+      <BottomNavbar />
     </>
   );
 };

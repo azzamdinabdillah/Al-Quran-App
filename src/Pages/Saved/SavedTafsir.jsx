@@ -10,7 +10,7 @@ import { UserAuth } from "../../context/AuthContext";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FiFolder, FiFolderPlus } from "react-icons/fi";
 
-const SavedQuran = () => {
+const SavedTafsir = () => {
   let [saved, setSaved] = useState([]);
   let [loading, setLoading] = useState(true);
   let [isOpen, setIsOpen] = useState(false);
@@ -21,7 +21,7 @@ const SavedQuran = () => {
     // let collectionQuran = collection(db, "saved");
     let queryRefCollectionQuran = query(
       collectionRef,
-      where("list", "==", "alquran")
+      where("list", "==", "tafsir")
     );
 
     getDocs(queryRefCollectionQuran).then((response) => {
@@ -47,8 +47,8 @@ const SavedQuran = () => {
   let submitFolder = (even) => {
     even.preventDefault();
     addDoc(collection(db, "folder"), {
-      folderName:dataInputFolderRef.current.value,
-      list:"alquran"
+      folderName: dataInputFolderRef.current.value,
+      list: "tafsir",
     });
     setIsOpen(false);
   };
@@ -116,7 +116,7 @@ const SavedQuran = () => {
       <div className="md:ml-10">
         <Navbar
           imgLeft={"/images/arrow-left.png"}
-          appbarName={"Al Quran"}
+          appbarName={"Tafsir"}
           linkTo={"/saved"}
         />
       </div>
@@ -156,31 +156,37 @@ const SavedQuran = () => {
             </>
           ) : (
             <div className="flex flex-col gap-3">
-              {(saved.length <= 0) ? <h1 className="font-semibold text-primary-blue px-10 text-center mt-10">Folder Kosong, Silahkan Buat Terlebih Dahulu</h1> : saved.map((row) => (
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  animate={{ opacity: 1 }}
-                  initial={{ opacity: 0 }}
-                  className=""
-                >
-                  <Link
-                    to={`/saved/surah/${row.folderName}`}
-                    className="flex bg-white rounded mx-3 px-5 py-3 justify-between items-center gap-3 dark:bg-[#2B303B]"
+              {saved.length <= 0 ? (
+                <h1 className="font-semibold text-primary-blue px-10 text-center mt-10">
+                  Folder Kosong, Silahkan Buat Terlebih Dahulu
+                </h1>
+              ) : (
+                saved.map((row) => (
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 0 }}
+                    className=""
                   >
-                    <div className="flex justify-start items-center gap-5 w-full ">
-                      <FiFolder className="text-[2rem] text-biru-terang" />
-                      <div className="">
-                        <p className="text-primary-blue dark:text-white font-medium text-lg">
-                          {row.folderName}
-                        </p>
-                        {/* <p className="text-light-gray">{saved.length} Item</p> */}
+                    <Link
+                      to={`/saved/tafsir/${row.folderName}`}
+                      className="flex bg-white rounded mx-3 px-5 py-3 justify-between items-center gap-3 dark:bg-[#2B303B]"
+                    >
+                      <div className="flex justify-start items-center gap-5 w-full ">
+                        <FiFolder className="text-[2rem] text-biru-terang" />
+                        <div className="">
+                          <p className="text-primary-blue dark:text-white font-medium text-lg">
+                            {row.folderName}
+                          </p>
+                          {/* <p className="text-light-gray">{saved.length} Item</p> */}
+                        </div>
                       </div>
-                    </div>
-                    <BiDotsVerticalRounded className="text-[2rem] text-primary-blue dark:text-biru-muda" />
-                  </Link>
-                </motion.div>
-              ))}
+                      <BiDotsVerticalRounded className="text-[2rem] text-primary-blue dark:text-biru-muda" />
+                    </Link>
+                  </motion.div>
+                ))
+              )}
             </div>
           )}
         </div>
@@ -189,4 +195,4 @@ const SavedQuran = () => {
   );
 };
 
-export default SavedQuran;
+export default SavedTafsir;

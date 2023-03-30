@@ -20,6 +20,7 @@ const Home = () => {
 
   let savedData = localStorage.getItem("savedData");
   let finalDataLastRead = JSON.parse(savedData);
+  console.log(finalDataLastRead);
   // console.log(finalDataLastRead);
 
   const variantBox = {
@@ -90,7 +91,7 @@ const Home = () => {
                     <p className="text-white font-medium">Last Read</p>
                   </div>
 
-                  {finalDataLastRead !== null ? (
+                  {Object.keys(finalDataLastRead).length >= 2 ? (
                     <div className="mt-8">
                       <h1 className="font-semibold text-white text-xl">
                         {finalDataLastRead.surat}

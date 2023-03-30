@@ -27,7 +27,9 @@ const BottomNavbar = () => {
       className="w-full fixed bottom-0 md:w-[15%] lg:w-[10%] md:top-0 md:left-0 bg-white md:shadow-none dark:bg-[#2B303B] z-40"
     >
       <nav className="px-10 md:px-4 py-3 md:py-5">
-        <h1 className="text-xl font-semibold hidden md:block dark:text-white">Menu</h1>
+        <h1 className="text-xl font-semibold hidden md:block dark:text-white">
+          Menu
+        </h1>
         <div className="flex md:flex-col md:justify-center md:items-center justify-between items-center md:mt-10 md:gap-10">
           <Link
             onClick={() => setActive(1)}
@@ -69,7 +71,7 @@ const BottomNavbar = () => {
 
           <Link
             onClick={() => setActive(3)}
-            to={"/saved/alquran"}
+            to={"/saved"}
             // className={
             //   active == 3
             //     ? "md:w-full border-b-4 rounded pb-2 border-slate-500"
