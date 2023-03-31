@@ -9,12 +9,15 @@ import { GoogleButton } from "react-google-button";
 import { UserAuth } from "../../context/AuthContext";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FiFolder, FiFolderPlus } from "react-icons/fi";
+import MenuDotThree from "../../components/MenuDotThree";
+import { NewMainContext } from "../../context/MainContext";
 
 const SavedTafsir = () => {
   let [saved, setSaved] = useState([]);
   let [loading, setLoading] = useState(true);
   let [isOpen, setIsOpen] = useState(false);
   let dataInputFolderRef = useRef();
+  let { isDeleteFolder, openConfirm, setOpenConfirm, setIsDeleteFolder } = NewMainContext();
 
   useEffect(() => {
     let collectionRef = collection(db, "folder");
@@ -32,7 +35,11 @@ const SavedTafsir = () => {
       setSaved(arr);
       setLoading(false);
     });
-  }, [isOpen]);
+
+    setTimeout(() => {
+      setIsDeleteFolder(false);
+    }, 500);
+  }, [isOpen, isDeleteFolder]);
 
   const { googleSignIn } = UserAuth();
 
@@ -138,6 +145,9 @@ const SavedTafsir = () => {
               Tambah Folder Baru
             </p>
           </div>
+          <div className="px-3 pb-3">
+            <h1 className="text-primary-blue font-medium"><span className="font-bold">Note:</span> Menghapus folder akan menghapus juga data di dalamnya</h1>
+          </div>
           {loading ? (
             <>
               <Skeleton />
@@ -163,15 +173,16 @@ const SavedTafsir = () => {
               ) : (
                 saved.map((row) => (
                   <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+                    key={row.id}
+                    // whileHover={{ scale: 1.1 }}
+                    // whileTap={{ scale: 0.9 }}
                     animate={{ opacity: 1 }}
                     initial={{ opacity: 0 }}
-                    className=""
+                    className="bg-white relative dark:bg-[#2B303B] flex items-center justify-between mx-3 pr-2"
                   >
                     <Link
                       to={`/saved/tafsir/${row.folderName}`}
-                      className="flex bg-white rounded mx-3 px-5 py-3 justify-between items-center gap-3 dark:bg-[#2B303B]"
+                      className="flex rounded justify-between items-center gap-3 w-full h-full px-5 py-3"
                     >
                       <div className="flex justify-start items-center gap-5 w-full ">
                         <FiFolder className="text-[2rem] text-biru-terang" />
@@ -182,8 +193,12 @@ const SavedTafsir = () => {
                           {/* <p className="text-light-gray">{saved.length} Item</p> */}
                         </div>
                       </div>
-                      <BiDotsVerticalRounded className="text-[2rem] text-primary-blue dark:text-biru-muda" />
                     </Link>
+                    <MenuDotThree
+                      idFolder={row.id}
+                      folderName={row.folderName}
+                      list={"tafsir"}
+                    />
                   </motion.div>
                 ))
               )}

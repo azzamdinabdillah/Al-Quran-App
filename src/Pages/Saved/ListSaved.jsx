@@ -23,7 +23,6 @@ const ListSaved = () => {
       <section
         className="pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
       >
-        {/* <GoogleButton onClick={handleGoogleSignIn} /> */}
         <div className="">
             <div className="flex flex-col gap-3">
                 <motion.div
@@ -46,7 +45,6 @@ const ListSaved = () => {
                         {/* <p className="text-light-gray">{saved.length} Item</p> */}
                       </div>
                     </div>
-                    <BiDotsVerticalRounded className="text-[2rem] text-primary-blue dark:text-biru-muda" />
                   </Link>
                 </motion.div>
 
@@ -70,7 +68,6 @@ const ListSaved = () => {
                         {/* <p className="text-light-gray">{saved.length} Item</p> */}
                       </div>
                     </div>
-                    <BiDotsVerticalRounded className="text-[2rem] text-primary-blue dark:text-biru-muda" />
                   </Link>
                 </motion.div>
             </div>

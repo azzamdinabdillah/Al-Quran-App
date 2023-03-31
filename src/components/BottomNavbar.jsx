@@ -40,7 +40,7 @@ const BottomNavbar = () => {
             //     : "md:w-full"
             // }
           >
-            <div classNamew="w-full">
+            <div className="w-full">
               <div className="w-full">
                 <FaQuran className="text-primary-blue dark:text-biru-muda mx-auto text-[2rem]" />
                 <h1 className="w-full text-sm mt-2 text-light-gray font-medium">

@@ -16,7 +16,11 @@ const SavedDetails = () => {
 
   useEffect(() => {
     let collectionRef = collection(db, "saved");
-    let queryRef = query(collectionRef, where("folder", "==", folderName));
+    let queryRef = query(
+      collectionRef,
+      where("folder", "==", folderName),
+      where("list", "==", list, "&&")
+    );
 
     getDocs(queryRef).then((response) => {
       let arr = [];
@@ -48,7 +52,7 @@ const SavedDetails = () => {
         />
       </div>
       <section className="pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
-        {/* <GoogleButton onClick={handleGoogleSignIn} /> */}
+        <GoogleButton onClick={handleGoogleSignIn} />
         <div className="">
           {/* <div className="flex justify-start items-center gap-3">
             <img src="./images/add-saved.png" alt="" className="w-[10%]" />

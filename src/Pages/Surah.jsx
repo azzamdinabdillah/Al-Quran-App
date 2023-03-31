@@ -101,7 +101,7 @@ const Surah = () => {
           savedTafsir={savedAyat}
           namaSurat={namaSurat}
           idTafsir={id}
-          whereList={"alquran"}
+          whereList="alquran"
         />
       ) : (
         ""
@@ -113,6 +113,7 @@ const Surah = () => {
         namaSurat={namaSurat}
         savedSurat={savedAyat}
         id={id}
+        lastReadMenu="alquran"
       />
 
       {alert ? <Alert message={"Berhasil ditambahkan"} /> : ""}

@@ -10,6 +10,11 @@ export const MainAppProvider = ({ children }) => {
   let [open, setOpen] = useState(false);
   let [alert, setAlert] = useState(false);
   let [openModalFromSaved, setOpenModalFromSaved] = useState(false);
+  let [isDeleteFolder, setIsDeleteFolder] = useState(false);
+
+  let [openConfirm, setOpenConfirm] = useState(false);
+  let [confirm, setConfirm] = useState(false);
+
 
   // breakpoint framer motion
   const breakpoints = {
@@ -49,6 +54,12 @@ export const MainAppProvider = ({ children }) => {
         setAlert,
         openModalFromSaved,
         setOpenModalFromSaved,
+        isDeleteFolder,
+        setIsDeleteFolder,
+        openConfirm,
+        setOpenConfirm,
+        confirm,
+        setConfirm
       }}
     >
       {children}

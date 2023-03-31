@@ -4,17 +4,22 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Skeleton from "../components/Skeleton";
+import Quran from "/images/quran.png";
 
 const Tafsir = () => {
   let [surat, setSurat] = useState([]);
   let [loading, setLoading] = useState(true);
+  // let [lastRead]
 
   useEffect(() => {
     fetch("https://equran.id/api/v2/surat")
       .then((response) => response.json())
       .then((data) => setSurat(data.data))
       .finally(() => setLoading(false));
-  }, []);
+
+    }, []);
+    let savedDataTafsir = localStorage.getItem("savedDataTafsir");
+    let finalDataLastRead = JSON.parse(savedDataTafsir);
 
   const variantBox = {
     hidden: {
@@ -50,13 +55,13 @@ const Tafsir = () => {
     //   <BottomNavbar />
     // </section>
     <>
-    <div className="md:px-10">
-      <Navbar
-        appbarName={"Tafsir Surat"}
-        imgLeft={"./images/arrow-left.png"}
-        linkTo={"/"}
-      />
-    </div>
+      <div className="md:px-10">
+        <Navbar
+          appbarName={"Tafsir Surat"}
+          imgLeft={"./images/arrow-left.png"}
+          linkTo={"/"}
+        />
+      </div>
       <section className="pt-10 md:px-10 bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
         <div className="px-5">
           <motion.div
@@ -72,7 +77,6 @@ const Tafsir = () => {
             }}
             className="md:grid grid-cols-2 justify-center items-center md:mt-10"
           >
-
             {/* style={{
             background:
               "linear-gradient(139deg, rgba(223,152,250,1) 14%, rgba(144,85,255,0.9753151260504201) 90%)",
@@ -103,7 +107,52 @@ const Tafsir = () => {
 
         <div className="mt-10">
           <div className="px-5">
-            <h1 className="font-bold text-primary-blue dark:text-white text-xl ">
+            {finalDataLastRead == null ? (
+              <div className="w-full rounded-lg relative bg-[#542E71]">
+                <div className="p-5">
+                  <div className="flex gap-3 items-center">
+                    <img src="/images/small-book.png" alt="" />
+                    <p className="text-white font-medium">Last Read</p>
+                  </div>
+                  <div className="mt-8">
+                    <h1 className="font-semibold text-white text-xl">
+                      Tidak Ada Data
+                    </h1>
+                    <p className="text-white mt-2">Tafsir ayat No 0</p>
+                  </div>
+                </div>
+                <img src={Quran} alt="" className="absolute bottom-0 right-0" />
+              </div>
+            ) : (
+              <Link
+                to={`/tafsir/${finalDataLastRead.surat}/${finalDataLastRead.idSurat}/${finalDataLastRead.tafsir}`}
+                className=""
+              >
+                <div className="w-full rounded-lg relative bg-[#542E71]">
+                  <div className="p-5">
+                    <div className="flex gap-3 items-center">
+                      <img src="/images/small-book.png" alt="" />
+                      <p className="text-white font-medium">Last Read</p>
+                    </div>
+                    <div className="mt-8">
+                      <h1 className="font-semibold text-white text-xl">
+                        {finalDataLastRead.surat}
+                      </h1>
+                      <p className="text-white mt-2">
+                        Tafsir ayat No {finalDataLastRead.tafsir}
+                      </p>
+                    </div>
+                  </div>
+                  <img
+                    src={Quran}
+                    alt=""
+                    className="absolute bottom-0 right-0"
+                  />
+                </div>
+              </Link>
+            )}
+
+            <h1 className="font-bold text-primary-blue dark:text-white text-xl mt-5">
               Surat{" "}
             </h1>
           </div>

@@ -90,10 +90,21 @@ const TafsirDetails = () => {
       )}
 
       {/* modal from saved */}
-      {openModalFromSaved === true ? <ModalFromSaved linkList={tafsirSaved} /> : ""}
+      {openModalFromSaved === true ? (
+        <ModalFromSaved linkList={tafsirSaved} />
+      ) : (
+        ""
+      )}
 
       {/* modal bottom menu */}
-      <ModalMenu menu1={"Tafsir"} />
+      <ModalMenu menu1={"Tafsir"} lastReadMenu="tafsir" namaSurat={namaSurat} savedSurat={savedTafsir} id={id} />
+      {/* <ModalMenu
+        menu1={"Tafsir"}
+        namaSurat={namaSurat}
+        savedSurat={savedAyat}
+        id={id}
+        list="surah"
+      /> */}
 
       <div className="">
         {loading ? (
@@ -177,7 +188,7 @@ const TafsirDetails = () => {
             >
               {tafsir.map((row) => (
                 <div
-                id={row.ayat}
+                  id={row.ayat}
                   key={row.id}
                   onClick={() => {
                     setOpen(true);

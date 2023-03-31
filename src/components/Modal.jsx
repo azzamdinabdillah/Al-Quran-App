@@ -148,7 +148,7 @@ export const ModalMenuFolder = (props) => {
                       surat: props.namaSurat,
                       idSurat: props.idTafsir,
                       folder: row.folderName,
-                      list: "tafsir",
+                      list: props.whereList,
                     });
                     if (addDoc) {
                       setAlert(true);
@@ -211,7 +211,27 @@ export const ModalMenu = (props) => {
       setAlert(false);
     }, 5000);
   };
-  // console.log(breakpoints);
+
+  const lastReadHandlerTafsir = () => {
+    // mendapatkan data dari localStorage
+    let savedDataTafsir = localStorage.getItem("savedDataTafsir");
+
+    // mengubah data string menjadi objek JSON
+    savedDataTafsir = savedDataTafsir ? JSON.parse(savedDataTafsir) : {};
+
+    // menambahkan data baru ke objek savedDataTafsir
+    savedDataTafsir.surat = props.namaSurat;
+    savedDataTafsir.tafsir = props.savedSurat;
+    savedDataTafsir.idSurat = props.id;
+
+    // menyimpan kembali data ke localStorage
+    localStorage.setItem("savedDataTafsir", JSON.stringify(savedDataTafsir));
+
+    setAlert(true);
+    setTimeout(() => {
+      setAlert(false);
+    }, 5000);
+  };
 
   {
     /* modal */
@@ -264,7 +284,11 @@ export const ModalMenu = (props) => {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={lastReadHandler}
+            onClick={
+              props.lastReadMenu == "tafsir"
+                ? lastReadHandlerTafsir
+                : lastReadHandler
+            }
             className="bg-white rounded py-3 px-3 flex justify-start items-center gap-3"
           >
             <AiOutlinePaperClip size={25} />
@@ -272,6 +296,60 @@ export const ModalMenu = (props) => {
               Tandai Terakhir Baca
             </h1>
           </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+export const ModalConfirm = () => {
+  let { openConfirm, setOpenConfirm, confirm, setConfirm } = NewMainContext();
+
+  return (
+    <motion.div
+      className="w-[80%] left-1/2 -translate-x-1/2 mx-auto z-50 fixed top-1/2 -translate-y-1/2 bg-[#EAF2EF] rounded-lg shadow-2xl"
+      animate={
+        openConfirm
+          ? {
+              opacity: 1,
+              overflow: "hidden",
+            }
+          : {
+              opacity: 0,
+              overflow: "hidden",
+            }
+      }
+      initial={
+        openConfirm
+          ? {
+              opacity: 0,
+              overflow: "hidden",
+            }
+          : {
+              opacity: 0,
+              overflow: "hidden",
+            }
+      }
+    >
+      <div className="relative">
+        <div className="px-5 py-10">
+          <h1 className="text-center font-medium text-lg">
+            Menghapus folder akan otomatis menghapus data di dalamnya, yakin?
+          </h1>
+          <div className="flex justify-center items-center gap-5 mt-5">
+            <button onClick={() => setOpenConfirm(false)} className="">
+              Tidak
+            </button>
+            <div onClick={() => setOpenConfirm(false)}>
+              {/* <ButtonPrimaryA name={"Hapus"} /> */}
+              <button
+                onClick={() => setConfirm(true)}
+                className="bg-primary-blue text-white py-3 px-5 rounded-lg"
+              >
+                Hapus
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>
