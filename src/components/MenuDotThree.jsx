@@ -10,10 +10,75 @@ import {
   doc,
   getDocs,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { ModalConfirm } from "./Modal";
+import { ModalConfirm, ModalUpdateFolder } from "./Modal";
+
+export const MenuDotThreeDetailsSaved = (props) => {
+  let [isOpenMenu, setIsOpenMenu] = useState(false);
+  let { deleteSavedDetails, setDeleteSavedDetails } = NewMainContext();
+  let deleteFolderHandler = async () => {
+    deleteDoc(doc(db, "saved", props.idSaved));
+    setDeleteSavedDetails(true);
+  };
+
+  let MenuHandler = () => {
+    isOpenMenu ? setIsOpenMenu(false) : setIsOpenMenu(true);
+  };
+
+  return (
+    <div className="">
+      <motion.div
+        animate={
+          isOpenMenu
+            ? {
+                opacity: 1,
+                padding: "20px",
+                overflow: "hidden",
+                position: "absolute",
+                top: "3rem",
+                right: "0rem",
+              }
+            : {
+                opacity: 0,
+                overflow: "hidden",
+                display: "none",
+              }
+        }
+        initial={
+          isOpenMenu
+            ? {
+                opacity: 0,
+                overflow: "hidden",
+              }
+            : {
+                opacity: 0,
+                overflow: "hidden",
+              }
+        }
+        className="bg-[#3B185F] z-40 rounded-lg"
+      >
+        <div className="flex flex-col gap-5">
+          <motion.div
+            onClick={deleteFolderHandler}
+            // onClick={() => setOpenConfirm(true)}
+            whileTap={{ scale: 0.9 }}
+            className="flex items-center gap-2"
+          >
+            <AiOutlineDelete className="text-white text-[1.5rem]" />
+            <h1 className="text-white">Hapus</h1>
+          </motion.div>
+        </div>
+      </motion.div>
+      <BiDotsVerticalRounded
+        onClick={MenuHandler}
+        className="text-[2rem] text-primary-blue dark:text-biru-muda"
+      />
+    </div>
+  );
+};
 
 const MenuDotThree = (props) => {
   let [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -24,13 +89,13 @@ const MenuDotThree = (props) => {
     setOpenConfirm,
     confirm,
     setConfirm,
+    updateFolderModal,
+    setUpdateFolderModal,
   } = NewMainContext();
 
   let MenuHandler = () => {
     isOpenMenu ? setIsOpenMenu(false) : setIsOpenMenu(true);
   };
-
-  console.log("ad22222", confirm);
 
   let deleteFolderHandler = async () => {
     deleteDoc(doc(db, "folder", props.idFolder));
@@ -52,9 +117,15 @@ const MenuDotThree = (props) => {
     }
   };
 
-  // if (confirm == true && props.list == props.list) {
-  //   deleteFolderHandler();
-  // }
+  // let updateFolderHandler = (even) => {
+  //   even.preventDefault();
+  //   updateDoc(doc(db, "folder", props.idFolder), {
+  //     folderName: "test2",
+  //   });
+  //   setUpdateFolderModal(false);
+  // };
+
+  // console.log("idfolder",props.idFolder);
 
   return (
     <div className="">
@@ -101,6 +172,8 @@ const MenuDotThree = (props) => {
             <h1 className="text-white">Hapus</h1>
           </motion.div>
           <motion.div
+            onClick={() => setUpdateFolderModal(true)}
+            // onClick={updateFolderHandler}
             whileTap={{ scale: 0.9 }}
             className="flex items-center gap-2"
           >

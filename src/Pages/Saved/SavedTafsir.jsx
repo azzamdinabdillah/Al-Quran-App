@@ -11,13 +11,23 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FiFolder, FiFolderPlus } from "react-icons/fi";
 import MenuDotThree from "../../components/MenuDotThree";
 import { NewMainContext } from "../../context/MainContext";
+import { ModalUpdateFolder } from "../../components/Modal";
 
 const SavedTafsir = () => {
   let [saved, setSaved] = useState([]);
   let [loading, setLoading] = useState(true);
   let [isOpen, setIsOpen] = useState(false);
   let dataInputFolderRef = useRef();
-  let { isDeleteFolder, openConfirm, setOpenConfirm, setIsDeleteFolder } = NewMainContext();
+  let {
+    isDeleteFolder,
+    openConfirm,
+    setOpenConfirm,
+    setIsDeleteFolder,
+    updateFolderModal,
+    setUpdateFolderModal,
+    dataIdFolder,
+    setDataIdFolder,
+  } = NewMainContext();
 
   useEffect(() => {
     let collectionRef = collection(db, "folder");
@@ -39,7 +49,7 @@ const SavedTafsir = () => {
     setTimeout(() => {
       setIsDeleteFolder(false);
     }, 500);
-  }, [isOpen, isDeleteFolder]);
+  }, [isOpen, isDeleteFolder, updateFolderModal]);
 
   const { googleSignIn } = UserAuth();
 
@@ -120,6 +130,9 @@ const SavedTafsir = () => {
         ""
       )}
 
+      {/* modal untuk update folder */}
+      {updateFolderModal === true ? <ModalUpdateFolder /> : ""}
+
       <div className="md:ml-10">
         <Navbar
           imgLeft={"/images/arrow-left.png"}
@@ -146,7 +159,10 @@ const SavedTafsir = () => {
             </p>
           </div>
           <div className="px-3 pb-3">
-            <h1 className="text-primary-blue font-medium"><span className="font-bold">Note:</span> Menghapus folder akan menghapus juga data di dalamnya</h1>
+            <h1 className="text-primary-blue font-medium">
+              <span className="font-bold">Note:</span> Menghapus folder akan
+              menghapus juga data di dalamnya
+            </h1>
           </div>
           {loading ? (
             <>
@@ -173,6 +189,7 @@ const SavedTafsir = () => {
               ) : (
                 saved.map((row) => (
                   <motion.div
+                    onClick={() => setDataIdFolder(row.id)}
                     key={row.id}
                     // whileHover={{ scale: 1.1 }}
                     // whileTap={{ scale: 0.9 }}
@@ -181,7 +198,7 @@ const SavedTafsir = () => {
                     className="bg-white relative dark:bg-[#2B303B] flex items-center justify-between mx-3 pr-2"
                   >
                     <Link
-                      to={`/saved/tafsir/${row.folderName}`}
+                      to={`/saved/tafsir/${row.id}`}
                       className="flex rounded justify-between items-center gap-3 w-full h-full px-5 py-3"
                     >
                       <div className="flex justify-start items-center gap-5 w-full ">

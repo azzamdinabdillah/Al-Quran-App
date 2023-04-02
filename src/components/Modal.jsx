@@ -1,6 +1,15 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { BsFillBookmarkFill } from "react-icons/bs";
 import { FiFolder } from "react-icons/fi";
@@ -147,7 +156,7 @@ export const ModalMenuFolder = (props) => {
                       ayat: props.savedTafsir,
                       surat: props.namaSurat,
                       idSurat: props.idTafsir,
-                      folder: row.folderName,
+                      folder: row.id,
                       list: props.whereList,
                     });
                     if (addDoc) {
@@ -350,6 +359,83 @@ export const ModalConfirm = () => {
               </button>
             </div>
           </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+export const ModalUpdateFolder = (props) => {
+  let { updateFolderModal, setUpdateFolderModal, dataIdFolder, setDataIdFolder } = NewMainContext();
+  let [dataValueUpdateFolder, setDataValueUpdateFolder] = useState("");
+
+  let dataInputUpdateFolderRef = useRef();
+
+  let updateFolderHandler = (even) => {
+    even.preventDefault();
+    updateDoc(doc(db, "folder", dataIdFolder), {
+      folderName: dataInputUpdateFolderRef.current.value,
+    });
+    setUpdateFolderModal(false);
+  };
+
+  useEffect(() => {
+    getDoc(doc(db, "folder", dataIdFolder)).then((response) => setDataValueUpdateFolder(response.data().folderName));
+  }, [])
+
+  return (
+    <motion.div
+      className="w-[80%] left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
+      animate={
+        updateFolderModal
+          ? {
+              opacity: 1,
+              overflow: "hidden",
+            }
+          : {
+              opacity: 0,
+              overflow: "hidden",
+            }
+      }
+      initial={
+        updateFolderModal
+          ? {
+              opacity: 0,
+              overflow: "hidden",
+            }
+          : {
+              opacity: 0,
+              overflow: "hidden",
+            }
+      }
+    >
+      <div className="relative">
+        <div className="px-5 py-10">
+          <h1 className="text-center font-semibold text-xl">
+            Tambah Folderasdasd
+          </h1>
+          <form onSubmit={updateFolderHandler} className="">
+            <input
+            autoFocus={true}
+              ref={dataInputUpdateFolderRef}
+              type="text"
+              defaultValue={dataValueUpdateFolder}
+              className="w-full px-3 py-3 mt-4 rounded"
+              placeholder="Masukkan Nama Folder"
+            />
+            <div className="flex justify-center items-center gap-5 mt-5">
+              <button onClick={() => setUpdateFolderModal(false)} className="">
+                Batal
+              </button>
+              <button
+                // type="submit"
+                // onClick={updateFolderHandler}
+                className="text-white py-2 px-5 rounded bg-biru-tua dark:bg-biru-muda"
+              >
+                Tambah
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </motion.div>

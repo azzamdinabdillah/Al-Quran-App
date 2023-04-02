@@ -1,24 +1,34 @@
 import Navbar from "../../components/Navbar";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Skeleton from "../../components/Skeleton";
 import { Link, useParams } from "react-router-dom";
 import { GoogleButton } from "react-google-button";
-import { UserAuth } from "../../context/AuthContext";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import MenuDotThree, { MenuDotThreeDetailsSaved } from "../../components/MenuDotThree";
+import { NewMainContext } from "../../context/MainContext";
 
 const SavedDetails = () => {
   let [saved, setSaved] = useState([]);
   let [loading, setLoading] = useState(true);
-  let { list, folderName } = useParams();
+  let [dataSavedDetails, setDataSavedDetails] = useState();
+  let { list, id } = useParams();
+  let {deleteSavedDetails, setDeleteSavedDetails} = NewMainContext();
 
   useEffect(() => {
     let collectionRef = collection(db, "saved");
     let queryRef = query(
       collectionRef,
-      where("folder", "==", folderName),
+      where("folder", "==", id),
       where("list", "==", list, "&&")
     );
 
@@ -30,29 +40,22 @@ const SavedDetails = () => {
       setSaved(arr);
       setLoading(false);
     });
-  }, []);
 
-  const { googleSignIn } = UserAuth();
-
-  const handleGoogleSignIn = async () => {
-    try {
-      await googleSignIn();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    getDoc(doc(db, "folder", id)).then((response) =>
+      setDataSavedDetails(response.data().folderName)
+    );
+  }, [deleteSavedDetails]);
 
   return (
     <>
       <div className="md:px-10">
         <Navbar
           imgLeft={"/images/arrow-left.png"}
-          appbarName={`${folderName}`}
+          appbarName={`${dataSavedDetails}`}
           linkTo={list == "tafsir" ? "/saved/tafsir" : "/saved/alquran"}
         />
       </div>
       <section className="pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
-        <GoogleButton onClick={handleGoogleSignIn} />
         <div className="">
           {/* <div className="flex justify-start items-center gap-3">
             <img src="./images/add-saved.png" alt="" className="w-[10%]" />
@@ -85,15 +88,16 @@ const SavedDetails = () => {
               ) : (
                 saved.map((row) => (
                   <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+                  key={row.id}
+                    // whileHover={{ scale: 1.1 }}
+                    // whileTap={{ scale: 0.9 }}
                     animate={{ opacity: 1 }}
                     initial={{ opacity: 0 }}
-                    className=""
+                    className="flex bg-white rounded mx-3 p-3 dark:bg-[#2B303B] justify-between items-center "
                   >
                     <Link
                       to={`/${list}/${row.surat}/${row.idSurat}/${row.ayat}`}
-                      className="flex bg-white rounded mx-3 p-3 justify-between items-center gap-3 dark:bg-[#2B303B]"
+                      className="gap-3w-full"
                     >
                       <div className="flex justify-start items-center gap-5 w-full ">
                         <div className="relative inline-block">
@@ -111,8 +115,12 @@ const SavedDetails = () => {
                           </p>
                         </div>
                       </div>
-                      <BiDotsVerticalRounded className="text-[2rem] text-primary-blue dark:text-biru-muda" />
                     </Link>
+                    <MenuDotThreeDetailsSaved
+                      idSaved={row.id}
+                      folderName={row.folderName}
+                      list={"tafsir"}
+                    />
                   </motion.div>
                 ))
               )}

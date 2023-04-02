@@ -11,14 +11,23 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FiFolder, FiFolderPlus } from "react-icons/fi";
 import MenuDotThree from "../../components/MenuDotThree";
 import { NewMainContext } from "../../context/MainContext";
+import { ModalUpdateFolder } from "../../components/Modal";
 
 const SavedQuran = () => {
   let [saved, setSaved] = useState([]);
   let [loading, setLoading] = useState(true);
   let [isOpen, setIsOpen] = useState(false);
   let dataInputFolderRef = useRef();
-  let { isDeleteFolder, openConfirm, setOpenConfirm, setIsDeleteFolder } =
-    NewMainContext();
+  let {
+    isDeleteFolder,
+    openConfirm,
+    setOpenConfirm,
+    setIsDeleteFolder,
+    updateFolderModal,
+    setUpdateFolderModal,
+    dataIdFolder,
+    setDataIdFolder,
+  } = NewMainContext();
 
   useEffect(() => {
     let collectionRef = collection(db, "folder");
@@ -40,17 +49,7 @@ const SavedQuran = () => {
     setTimeout(() => {
       setIsDeleteFolder(false);
     }, 500);
-  }, [isOpen, isDeleteFolder]);
-
-  const { googleSignIn } = UserAuth();
-
-  const handleGoogleSignIn = async () => {
-    try {
-      await googleSignIn();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, [isOpen, isDeleteFolder, updateFolderModal]);
 
   let submitFolder = (even) => {
     even.preventDefault();
@@ -63,10 +62,11 @@ const SavedQuran = () => {
 
   return (
     <>
-      {/* modal choose folder*/}
+      {/* modal add folder*/}
+
       {isOpen === true ? (
         <motion.div
-          className="w-[80%] left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
+          className="w-[80%] lg:w-[40%] lg:top-32 left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
           animate={
             isOpen
               ? {
@@ -121,6 +121,9 @@ const SavedQuran = () => {
         ""
       )}
 
+      {/* modal untuk update folder */}
+      {updateFolderModal === true ? <ModalUpdateFolder /> : ""}
+
       <div className="md:ml-10">
         <Navbar
           imgLeft={"/images/arrow-left.png"}
@@ -132,10 +135,9 @@ const SavedQuran = () => {
         className={
           isOpen
             ? "blur-sm z-30 brightness-50 pt-24 pb-28"
-            : "blur-none z-30 pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
+            : "blur-none z-30 pt-20 md:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
         }
       >
-        <GoogleButton onClick={handleGoogleSignIn} />
         <div className="">
           <div
             onClick={() => setIsOpen(true)}
@@ -178,6 +180,7 @@ const SavedQuran = () => {
                 saved.map((row) => (
                   <motion.div
                     key={row.id}
+                    onClick={() => setDataIdFolder(row.id)}
                     // whileHover={{ scale: 1.1 }}
                     // whileTap={{ scale: 0.9 }}
                     animate={{ opacity: 1 }}
@@ -185,12 +188,13 @@ const SavedQuran = () => {
                     className="bg-white relative dark:bg-[#2B303B] flex items-center justify-between mx-3 pr-2"
                   >
                     <Link
-                      to={`/saved/alquran/${row.folderName}`}
+                      to={`/saved/alquran/${row.id}`}
                       className="flex w-full h-full rounded px-5 py-3 justify-between items-center gap-3 dark:bg-[#2B303B]"
                     >
                       <div className="flex justify-start items-center gap-5 w-full ">
                         <FiFolder className="text-[2rem] text-biru-terang" />
                         <div className="">
+                          {/* {(updateFolderModal)} */}
                           <p className="text-primary-blue dark:text-white font-medium text-lg">
                             {row.folderName}
                           </p>
@@ -199,7 +203,8 @@ const SavedQuran = () => {
                       </div>
                     </Link>
                     <MenuDotThree
-                      idFolder={row.id}
+                      // idFolder={row.id}
+                      idFolder={dataIdFolder}
                       folderName={row.folderName}
                       list={"alquran"}
                     />

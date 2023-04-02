@@ -7,7 +7,6 @@ import { BsFillBookmarkFill } from "react-icons/bs";
 const BottomNavbar = () => {
   let [active, setActive] = useState(null);
   const navigasi = useNavigate();
-  console.log(active);
 
   // useEffect(() => {
   //   if (active == 1) {

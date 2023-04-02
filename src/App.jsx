@@ -27,7 +27,7 @@ function App() {
               <Routes>
                 <Route path="/:lastSurat?/:lastAyat?" element={<Home />} />
                 <Route
-                  path="/surah/:namaSurat/:id/:ayatSaved"
+                  path="/alquran/:namaSurat/:id/:ayatSaved"
                   element={<Surah />}
                 />
                 <Route path="/tafsir" element={<Tafsir />} />
@@ -39,7 +39,7 @@ function App() {
                 <Route path="/saved" element={<ListSaved />} />
                 <Route path="/saved/alquran" element={<SavedQuran />} />
                 <Route
-                  path="/saved/:list/:folderName"
+                  path="/saved/:list/:id"
                   element={<SavedQuranDetails />}
                 />
               </Routes>
