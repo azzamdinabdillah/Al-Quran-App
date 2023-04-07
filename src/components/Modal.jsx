@@ -102,7 +102,8 @@ export const ModalMenuFolder = (props) => {
     let collectionRef = collection(db, "folder");
     let queryCollection = query(
       collectionRef,
-      where("list", "==", props.whereList)
+      where("list", "==", props.whereList),
+      where("user", "==", props.user, "&&")
     );
 
     getDocs(queryCollection).then((response) => {
@@ -158,6 +159,7 @@ export const ModalMenuFolder = (props) => {
                       idSurat: props.idTafsir,
                       folder: row.id,
                       list: props.whereList,
+                      user: props.user
                     });
                     if (addDoc) {
                       setAlert(true);
@@ -282,7 +284,10 @@ export const ModalMenu = (props) => {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => setChooseFolder(true)}
+            onClick={() => {
+              setChooseFolder(true);
+              setOpen(false);
+            }}
             className="bg-white rounded py-3 px-3 flex justify-start items-center gap-3"
           >
             <BsFillBookmarkFill size={25} />

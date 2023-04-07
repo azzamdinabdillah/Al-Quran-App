@@ -175,6 +175,7 @@ const Tafsir = () => {
               >
                 {surat.map((row) => (
                   <motion.div
+                  key={row.id}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     variants={variantList}

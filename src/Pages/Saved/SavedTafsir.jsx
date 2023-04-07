@@ -29,12 +29,15 @@ const SavedTafsir = () => {
     setDataIdFolder,
   } = NewMainContext();
 
+  let { user } = UserAuth();
+
   useEffect(() => {
     let collectionRef = collection(db, "folder");
     // let collectionQuran = collection(db, "saved");
     let queryRefCollectionQuran = query(
       collectionRef,
-      where("list", "==", "tafsir")
+      where("list", "==", "tafsir"),
+      where("user", "==", user.uid, "&&")
     );
 
     getDocs(queryRefCollectionQuran).then((response) => {
@@ -66,13 +69,14 @@ const SavedTafsir = () => {
     addDoc(collection(db, "folder"), {
       folderName: dataInputFolderRef.current.value,
       list: "tafsir",
+      user: user.uid
     });
     setIsOpen(false);
   };
 
   return (
     <>
-      {/* modal choose folder*/}
+      {/* modal tambah folder*/}
       {isOpen === true ? (
         <motion.div
           className="w-[80%] left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
@@ -143,8 +147,8 @@ const SavedTafsir = () => {
       <section
         className={
           isOpen
-            ? "blur-sm z-30 brightness-50 pt-24 pb-28"
-            : "blur-none z-30 pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
+            ? "blur-sm z-30 brightness-50 pt-24 lg:pt-5 pb-28"
+            : "blur-none z-30 pt-24 lg:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
         }
       >
         {/* <GoogleButton onClick={handleGoogleSignIn} /> */}
@@ -159,7 +163,7 @@ const SavedTafsir = () => {
             </p>
           </div>
           <div className="px-3 pb-3">
-            <h1 className="text-primary-blue font-medium">
+            <h1 className="text-primary-blue font-medium dark:text-white">
               <span className="font-bold">Note:</span> Menghapus folder akan
               menghapus juga data di dalamnya
             </h1>

@@ -1,9 +1,7 @@
+import {UserAuth} from "../context/AuthContext";
 import ArrowLeft from "/images/arrow-left.png";
 import Book from "/images/quran.png";
 import Bismillah from "/images/bismillah.png";
-import Bookmark from "/images/bookmark.png";
-import { AiOutlinePaperClip } from "react-icons/ai";
-import { BsFillBookmarkFill } from "react-icons/bs";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -49,6 +47,8 @@ const Surah = () => {
     openModalFromSaved,
   } = NewMainContext();
 
+  let { user } = UserAuth();
+
   useEffect(() => {
     fetch(`https://equran.id/api/v2/surat/${id}`)
       .then((response) => response.json())
@@ -67,7 +67,7 @@ const Surah = () => {
     }, 10000);
 
     let collectionRef = collection(db, "folder");
-    let collectionQuery = query(collectionRef, where("list", "==", "alquran"));
+    let collectionQuery = query(collectionRef, where("list", "==", "alquran"),where("user", "==", user.uid, "&&"));
 
     getDocs(collectionQuery).then((response) => {
       let arr = [];
@@ -102,6 +102,7 @@ const Surah = () => {
           namaSurat={namaSurat}
           idTafsir={id}
           whereList="alquran"
+          user= {user.uid}
         />
       ) : (
         ""
@@ -125,7 +126,7 @@ const Surah = () => {
         }}
         id="top"
         className={
-          open || openModalFromSaved
+          open || openModalFromSaved || chooseFolder
             ? "blur-sm z-30 brightness-50"
             : "blur-none z-30"
         }
@@ -137,7 +138,7 @@ const Surah = () => {
             appbarName={data.namaLatin}
           />
         </div>
-        <div className="px-3 pb-24 md:px-32 lg:px-96 pt-20 bg-[#EAF2EF] dark:bg-[#2F243A]">
+        <div className="px-3 pb-24 md:px-32 lg:px-96 pt-20 md:pt-0 bg-[#EAF2EF] dark:bg-[#2F243A]">
           <div>
             {loading ? (
               <SkeletonDetails />

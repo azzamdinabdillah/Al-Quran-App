@@ -20,13 +20,12 @@ export const AuthContextProvider = ({children}) => {
     useEffect(() => {
         let unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser)
-            console.log(currentUser);
         })
 
         return () => {
             unsubscribe()
         }
-    })
+    }, []);
 
     return (
         <AuthContext.Provider value={{ googleSignIn, logOut, user }}>

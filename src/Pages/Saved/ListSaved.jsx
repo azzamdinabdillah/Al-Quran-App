@@ -14,17 +14,19 @@ const ListSaved = () => {
 
   const { googleSignIn, logOut, user } = UserAuth();
 
-  const handleGoogleSignIn = async () => {
+  console.log("data user", user);
+
+  const handleGoogleSignIn = () => {
     try {
-      await googleSignIn();
+      googleSignIn();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleLogOut = async () => {
+  const handleLogOut = () => {
     try {
-      await logOut();
+      logOut();
     } catch (error) {
       console.log("bentar bang error", error);
     }
@@ -39,16 +41,17 @@ const ListSaved = () => {
           linkTo={"/"}
         />
       </div>
-      <section className="pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
+      <section className="pt-24 md:pt-0 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
         <div className="pb-5 flex justify-center">
           {user?.displayName ? (
-            <button onClick={handleLogOut}>Logout</button>
+            <button onClick={handleLogOut} className="bg-biru-muda text-white font-medium px-10 py-3 rounded">Logout</button>
           ) : (
             <GoogleButton onClick={handleGoogleSignIn} />
           )}
         </div>
         <div className="">
-          <div className="flex flex-col gap-3">
+        {user?.displayName ? (
+            <div className="flex flex-col gap-3">
             <motion.div
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -94,7 +97,13 @@ const ListSaved = () => {
                 </div>
               </Link>
             </motion.div>
-          </div>
+          </div>  
+          ) : (
+            <div className="">
+              <h1 className="text-center font-medium text-biru-tua capitalize text-lg dark:text-biru-muda">silahkan login terlebih dahulu untuk menyimpan data anda</h1>
+            </div>
+          )}
+          
         </div>
       </section>
     </>

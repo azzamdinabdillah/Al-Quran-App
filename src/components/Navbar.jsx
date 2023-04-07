@@ -33,7 +33,7 @@ const Navbar = (props) => {
             alt=""
             className="scale-50 toggleDark"
           />
-          <img src={Search} alt="" />
+          {/* <img src={Search} alt="" /> */}
         </div>
       </div>
     </div>

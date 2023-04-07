@@ -1,14 +1,11 @@
+import { UserAuth } from "../context/AuthContext";
 import ArrowLeft from "/images/arrow-left.png";
-import Book from "/images/quran.png";
-import Bismillah from "/images/bismillah.png";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { SkeletonDetails } from "../components/Skeleton";
 import { motion } from "framer-motion";
 import BottomNavbar from "../components/BottomNavbar";
-import { AiOutlinePaperClip } from "react-icons/ai";
-import { BsFillBookmarkFill } from "react-icons/bs";
 import {
   ModalFromSaved,
   ModalMenu,
@@ -33,6 +30,8 @@ const TafsirDetails = () => {
     setOpenModalFromSaved,
     openModalFromSaved,
   } = NewMainContext();
+
+  let { user } = UserAuth();
 
   const lastReadHandler = () => {
     // mendapatkan data dari localStorage
@@ -84,6 +83,7 @@ const TafsirDetails = () => {
           namaSurat={namaSurat}
           idTafsir={id}
           whereList={"tafsir"}
+          user={user.uid}
         />
       ) : (
         ""

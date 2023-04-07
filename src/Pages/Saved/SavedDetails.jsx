@@ -16,6 +16,7 @@ import { GoogleButton } from "react-google-button";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import MenuDotThree, { MenuDotThreeDetailsSaved } from "../../components/MenuDotThree";
 import { NewMainContext } from "../../context/MainContext";
+import { UserAuth } from "../../context/AuthContext";
 
 const SavedDetails = () => {
   let [saved, setSaved] = useState([]);
@@ -24,12 +25,15 @@ const SavedDetails = () => {
   let { list, id } = useParams();
   let {deleteSavedDetails, setDeleteSavedDetails} = NewMainContext();
 
+  let { user } = UserAuth();
+
   useEffect(() => {
     let collectionRef = collection(db, "saved");
     let queryRef = query(
       collectionRef,
       where("folder", "==", id),
-      where("list", "==", list, "&&")
+      where("list", "==", list, "&&"),
+      where("user", "==", user.uid, "&&")
     );
 
     getDocs(queryRef).then((response) => {
@@ -55,7 +59,7 @@ const SavedDetails = () => {
           linkTo={list == "tafsir" ? "/saved/tafsir" : "/saved/alquran"}
         />
       </div>
-      <section className="pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
+      <section className="pt-24 md:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
         <div className="">
           {/* <div className="flex justify-start items-center gap-3">
             <img src="./images/add-saved.png" alt="" className="w-[10%]" />
@@ -93,7 +97,7 @@ const SavedDetails = () => {
                     // whileTap={{ scale: 0.9 }}
                     animate={{ opacity: 1 }}
                     initial={{ opacity: 0 }}
-                    className="flex bg-white rounded mx-3 p-3 dark:bg-[#2B303B] justify-between items-center "
+                    className="flex relative bg-white rounded mx-3 p-3 dark:bg-[#2B303B] justify-between items-center "
                   >
                     <Link
                       to={`/${list}/${row.surat}/${row.idSurat}/${row.ayat}`}
@@ -116,11 +120,13 @@ const SavedDetails = () => {
                         </div>
                       </div>
                     </Link>
+                    <div className="cursor-pointer">
                     <MenuDotThreeDetailsSaved
                       idSaved={row.id}
                       folderName={row.folderName}
                       list={"tafsir"}
                     />
+                    </div>
                   </motion.div>
                 ))
               )}

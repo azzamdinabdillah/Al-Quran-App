@@ -6,10 +6,12 @@ import { motion } from "framer-motion";
 import Quran from "/images/quran.png";
 import Alert from "../components/Alert";
 import { ButtonForGoTop } from "../components/Button";
+import { UserAuth } from "../context/AuthContext";
 
 const Home = () => {
   let [surat, setSurat] = useState([]);
   let [loading, setLoading] = useState(true);
+  let {user} = UserAuth();
 
   useEffect(() => {
     fetch("https://equran.id/api/v2/surat")
@@ -53,7 +55,7 @@ const Home = () => {
             appbarName={"Surat"}
           />
         </div>
-        <section className="pt-16 w-full bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
+        <section className="pt-16 md:pt-0 w-full bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
           <div className="px-5">
             <motion.div
               animate={{
@@ -73,7 +75,7 @@ const Home = () => {
                   Assalamualaikum
                 </p>
                 <h1 className="text-dark-blue dark:text-white font-semibold text-2xl mt-1">
-                  Azam Din Abdillah
+                  {user ? user.displayName : "Hamba Allah"}
                 </h1>
               </div>
 

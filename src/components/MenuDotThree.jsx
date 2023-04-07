@@ -58,7 +58,7 @@ export const MenuDotThreeDetailsSaved = (props) => {
                 overflow: "hidden",
               }
         }
-        className="bg-[#3B185F] z-40 rounded-lg"
+        className="bg-[#3B185F] z-40 rounded-lg dark:bg-biru-muda"
       >
         <div className="flex flex-col gap-5">
           <motion.div
@@ -67,8 +67,8 @@ export const MenuDotThreeDetailsSaved = (props) => {
             whileTap={{ scale: 0.9 }}
             className="flex items-center gap-2"
           >
-            <AiOutlineDelete className="text-white text-[1.5rem]" />
-            <h1 className="text-white">Hapus</h1>
+            <AiOutlineDelete className="text-white dark:text-primary-blue dark:font-medium text-[1.5rem]" />
+            <h1 className="text-white dark:text-primary-blue dark:font-medium">Hapus</h1>
           </motion.div>
         </div>
       </motion.div>
@@ -159,7 +159,7 @@ const MenuDotThree = (props) => {
                 overflow: "hidden",
               }
         }
-        className="bg-[#3B185F] z-40 rounded-lg"
+        className="bg-[#3B185F] z-40 rounded-lg dark:bg-biru-muda"
       >
         <div className="flex flex-col gap-5">
           <motion.div
@@ -168,8 +168,8 @@ const MenuDotThree = (props) => {
             whileTap={{ scale: 0.9 }}
             className="flex items-center gap-2"
           >
-            <AiOutlineDelete className="text-white text-[1.5rem]" />
-            <h1 className="text-white">Hapus</h1>
+            <AiOutlineDelete className="text-white dark:text-primary-blue dark:font-medium text-[1.5rem]" />
+            <h1 className="text-white dark:text-primary-blue dark:font-medium">Hapus</h1>
           </motion.div>
           <motion.div
             onClick={() => setUpdateFolderModal(true)}
@@ -177,8 +177,8 @@ const MenuDotThree = (props) => {
             whileTap={{ scale: 0.9 }}
             className="flex items-center gap-2"
           >
-            <BiRename className="text-white text-[1.5rem]" />
-            <h1 className="text-white">Ubah Nama</h1>
+            <BiRename className="text-white dark:text-primary-blue dark:font-medium text-[1.5rem]" />
+            <h1 className="text-white dark:text-primary-blue dark:font-medium">Ubah Nama</h1>
           </motion.div>
         </div>
       </motion.div>

@@ -18,6 +18,7 @@ const SavedQuran = () => {
   let [loading, setLoading] = useState(true);
   let [isOpen, setIsOpen] = useState(false);
   let dataInputFolderRef = useRef();
+  
   let {
     isDeleteFolder,
     openConfirm,
@@ -28,13 +29,16 @@ const SavedQuran = () => {
     dataIdFolder,
     setDataIdFolder,
   } = NewMainContext();
+  let { user } = UserAuth();
+  console.log("datauer", user.uid);
 
   useEffect(() => {
     let collectionRef = collection(db, "folder");
     // let collectionQuran = collection(db, "saved");
     let queryRefCollectionQuran = query(
       collectionRef,
-      where("list", "==", "alquran")
+      where("list", "==", "alquran"),
+      where("user", "==", user.uid, "&&")
     );
 
     getDocs(queryRefCollectionQuran).then((response) => {
@@ -56,6 +60,7 @@ const SavedQuran = () => {
     addDoc(collection(db, "folder"), {
       folderName: dataInputFolderRef.current.value,
       list: "alquran",
+      user: user.uid,
     });
     setIsOpen(false);
   };
@@ -66,7 +71,7 @@ const SavedQuran = () => {
 
       {isOpen === true ? (
         <motion.div
-          className="w-[80%] lg:w-[40%] lg:top-32 left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
+          className="w-[80%] md:w-[40%] lg:w-[40%] lg:top-32 left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
           animate={
             isOpen
               ? {
@@ -134,14 +139,14 @@ const SavedQuran = () => {
       <section
         className={
           isOpen
-            ? "blur-sm z-30 brightness-50 pt-24 pb-28"
+            ? "blur-sm z-30 brightness-50 pt-24 md:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
             : "blur-none z-30 pt-20 md:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
         }
       >
         <div className="">
           <div
             onClick={() => setIsOpen(true)}
-            className="flex justify-start items-center gap-3 mx-3 mb-5 px-3 bg-biru-muda py-3 rounded"
+            className="flex justify-start items-center gap-3 mx-3 mb-5 px-3 bg-biru-muda py-3 rounded cursor-pointer"
           >
             <FiFolderPlus className="text-[2rem] text-biru-terang" />
             <p className="text-primary-blue font-semibold text-lg">
@@ -149,7 +154,7 @@ const SavedQuran = () => {
             </p>
           </div>
           <div className="px-3 pb-3">
-            <h1 className="text-primary-blue font-medium">
+            <h1 className="text-primary-blue font-medium dark:text-white">
               <span className="font-bold">Note:</span> Menghapus folder akan
               menghapus juga data di dalamnya
             </h1>
@@ -202,12 +207,14 @@ const SavedQuran = () => {
                         </div>
                       </div>
                     </Link>
+                    <div className="cursor-pointer">
                     <MenuDotThree
                       // idFolder={row.id}
                       idFolder={dataIdFolder}
                       folderName={row.folderName}
                       list={"alquran"}
                     />
+                    </div>
                   </motion.div>
                 ))
               )}
