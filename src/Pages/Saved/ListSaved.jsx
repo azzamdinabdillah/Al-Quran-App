@@ -9,17 +9,18 @@ import { GoogleButton } from "react-google-button";
 import { UserAuth } from "../../context/AuthContext";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FiFolder, FiFolderPlus } from "react-icons/fi";
+import { GoogleLogin } from "@react-oauth/google";
 
 const ListSaved = () => {
 
-  const { googleSignIn, logOut, user } = UserAuth();
+  const { googleSignIn, logOut, user, setUser } = UserAuth();
 
   console.log("data user", user);
 
   const handleGoogleSignIn = () => {
     try {
       googleSignIn();
-    } catch (error) {
+    } catch (error) { 
       console.log(error);
     }
   };
@@ -43,11 +44,15 @@ const ListSaved = () => {
       </div>
       <section className="pt-24 md:pt-0 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
         <div className="pb-5 flex justify-center">
-          {user?.displayName ? (
+          {/* {user?.displayName ? (
             <button onClick={handleLogOut} className="bg-biru-muda text-white font-medium px-10 py-3 rounded">Logout</button>
           ) : (
             <GoogleButton onClick={handleGoogleSignIn} />
-          )}
+          )} */}
+          <GoogleLogin onSuccess={credentialResponse => {
+            setUser(credentialResponse);
+            console.log("datanya bang", credentialResponse);
+          }} onError={() => console.log("error bg")} />
         </div>
         <div className="">
         {user?.displayName ? (

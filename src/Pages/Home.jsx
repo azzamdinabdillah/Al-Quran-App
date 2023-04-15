@@ -23,6 +23,8 @@ const Home = () => {
   let savedData = localStorage.getItem("savedData");
   let finalDataLastRead = JSON.parse(savedData);
 
+  console.log("data bang",user);
+
   const variantBox = {
     hidden: {
       opacity: 0,
