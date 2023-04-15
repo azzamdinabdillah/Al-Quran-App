@@ -17,7 +17,7 @@ const Navbar = (props) => {
 
   return (
     <div className="fixed md:relative z-20 w-full bg-[#EAF2EF] dark:bg-[#2F243A] px-5 py-2 top-0">
-      <div className="flex justify-between md:justify-start items-center">
+      <div className="flex justify-between md:justify-start items-center md:pl-[10rem]">
         <div className="flex justify-start items-center gap-5">
           <Link to={props.linkTo}>
             <img src={props.imgLeft} alt="" />

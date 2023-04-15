@@ -66,16 +66,19 @@ const Surah = () => {
       setOpenModalFromSaved(false);
     }, 10000);
 
-    let collectionRef = collection(db, "folder");
-    let collectionQuery = query(collectionRef, where("list", "==", "alquran"),where("user", "==", user.uid, "&&"));
-
-    getDocs(collectionQuery).then((response) => {
-      let arr = [];
-      response.forEach((doc) => {
-        arr.push({ ...doc.data(), id: doc.id });
+    if (user?.sub) {
+      let collectionRef = collection(db, "folder");
+      let collectionQuery = query(collectionRef, where("list", "==", "alquran"),where("user", "==", user.sub, "&&"));
+  
+      getDocs(collectionQuery).then((response) => {
+        let arr = [];
+        response.forEach((doc) => {
+          arr.push({ ...doc.data(), id: doc.id });
+        });
+        setFolder(arr);
       });
-      setFolder(arr);
-    });
+    }
+
   }, []);
 
   // console.log(openModalFromSaved);
@@ -97,13 +100,14 @@ const Surah = () => {
 
       {/* modal choose folder*/}
       {chooseFolder === true ? (
-        <ModalMenuFolder
-          savedTafsir={savedAyat}
-          namaSurat={namaSurat}
-          idTafsir={id}
-          whereList="alquran"
-          user= {user.uid}
-        />
+        (user?.sub) ? <ModalMenuFolder
+        savedTafsir={savedAyat}
+        namaSurat={namaSurat}
+        idTafsir={id}
+        whereList="alquran"
+        user= {user.sub}
+      /> :
+        <Alert message={"Silahkan Login Terlebih dahulu"} />
       ) : (
         ""
       )}
@@ -125,20 +129,21 @@ const Surah = () => {
           chooseFolder ? setChooseFolder(false) : "";
         }}
         id="top"
-        className={
-          open || openModalFromSaved || chooseFolder
-            ? "blur-sm z-30 brightness-50"
-            : "blur-none z-30"
-        }
+        className="relative"
       >
-        <div className="md:px-10">
+        <div className={
+          open || openModalFromSaved || chooseFolder
+            ? "blur-sm brightness-50 h-screen w-screen bg-black fixed z-30 bg-opacity-40 left-0 top-0"
+            : "blur-none z-30 relative"
+        }></div>
+        <div className="fixed top-0 left-0 w-full z-20">
           <Navbar
             linkTo={"/"}
             imgLeft={ArrowLeft}
             appbarName={data.namaLatin}
           />
         </div>
-        <div className="px-3 pb-24 md:px-32 lg:px-96 pt-20 md:pt-0 bg-[#EAF2EF] dark:bg-[#2F243A]">
+        <div className="px-3 pb-24 md:px-32 lg:px-96 pt-20 md:pt-24 bg-[#EAF2EF] dark:bg-[#2F243A]">
           <div>
             {loading ? (
               <SkeletonDetails />
@@ -210,8 +215,9 @@ const Surah = () => {
                 className=""
               >
                 {ayat.map((row) => (
-                  <div className="">
+                  <div className="cursor-pointer">
                     <div
+                    key={row.id}
                       id={row.nomorAyat}
                       onClick={() => {
                         setOpen(true);

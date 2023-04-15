@@ -78,13 +78,14 @@ const TafsirDetails = () => {
 
       {/* modal choose folder*/}
       {chooseFolder === true ? (
-        <ModalMenuFolder
-          savedTafsir={savedTafsir}
-          namaSurat={namaSurat}
-          idTafsir={id}
-          whereList={"tafsir"}
-          user={user.uid}
-        />
+        (user?.sub) ? <ModalMenuFolder
+        savedTafsir={savedTafsir}
+        namaSurat={namaSurat}
+        idTafsir={id}
+        whereList={"tafsir"}
+        user={user.sub}
+      /> :
+      <Alert message={"Silahkan Login Terlebih Dahulu"} />
       ) : (
         ""
       )}
@@ -112,7 +113,7 @@ const TafsirDetails = () => {
             <div className="bg-slate-200 w-full mt-3 py-2 rounded-full"></div>
           </div>
         ) : (
-          <div className="pb-10 md:px-10">
+          <div className="fixed top-0 left-0 w-full">
             <Navbar
               linkTo={"/"}
               imgLeft={ArrowLeft}
@@ -127,13 +128,13 @@ const TafsirDetails = () => {
           chooseFolder ? setChooseFolder(false) : "";
         }}
         id="top"
-        className={
-          open || openModalFromSaved
-            ? "blur-sm z-30 brightness-50 px-3 pt-5 mt-5"
-            : "blur-none z-30 px-3 pt-5 mt-5"
-        }
       >
-        {/* <section className="px-3 pt-5 mt-5"> */}
+        {/* penggelap saat ada modal */}
+        <div className={
+          open || openModalFromSaved || chooseFolder
+            ? "blur-sm brightness-50 h-screen w-screen bg-black fixed z-30 bg-opacity-40 left-0 top-0"
+            : "blur-none z-30 relative"
+        }></div>
         <div>
           {loading ? (
             <SkeletonDetails />
@@ -184,7 +185,7 @@ const TafsirDetails = () => {
               animate={{ opacity: 1 }}
               initial={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="md:grid md:grid-cols-2 gap-x-3"
+              className="md:grid md:grid-cols-2 gap-x-3 mt-20 mx-3 md:mt-20 md:mx-10"
             >
               {tafsir.map((row) => (
                 <div

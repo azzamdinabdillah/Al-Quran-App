@@ -9,13 +9,12 @@ import { GoogleButton } from "react-google-button";
 import { UserAuth } from "../../context/AuthContext";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FiFolder, FiFolderPlus } from "react-icons/fi";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, googleLogout } from "@react-oauth/google";
+import jwtDecode from "jwt-decode";
 
 const ListSaved = () => {
 
   const { googleSignIn, logOut, user, setUser } = UserAuth();
-
-  console.log("data user", user);
 
   const handleGoogleSignIn = () => {
     try {
@@ -33,29 +32,46 @@ const ListSaved = () => {
     }
   }
 
+  let cobaLogout = () => {
+    googleLogout();
+  }
+
+  const newLoginGoogle = (response) => {
+    let token = response.credential;
+    let tokenDecoded = jwtDecode(token);
+    setUser(tokenDecoded);
+  }
+
+  console.log("dataa usernya abanggg", user);
+
   return (
     <>
-      <div className="md:ml-10">
+      <div className="fixed top-0 left-0 w-full">
         <Navbar
           imgLeft={"/images/arrow-left.png"}
           appbarName={"Bookmark List"}
           linkTo={"/"}
         />
       </div>
-      <section className="pt-24 md:pt-0 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
+      <section className="pt-24 md:pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
         <div className="pb-5 flex justify-center">
-          {/* {user?.displayName ? (
+          {/* {user?.credential ? (
             <button onClick={handleLogOut} className="bg-biru-muda text-white font-medium px-10 py-3 rounded">Logout</button>
           ) : (
             <GoogleButton onClick={handleGoogleSignIn} />
           )} */}
+          {/* {user?.credential ? (
+            <button onClick={cobaLogout} className="bg-biru-muda text-white font-medium px-10 py-3 rounded">Logout</button>
+          ) : (  
           <GoogleLogin onSuccess={credentialResponse => {
             setUser(credentialResponse);
             console.log("datanya bang", credentialResponse);
-          }} onError={() => console.log("error bg")} />
+          }} onError={() => console.log("error bg")} auto_select="true" useOneTap />
+          )} */}
+          <GoogleLogin onSuccess={newLoginGoogle} onError={() => console.log("error bg")} auto_select="true" useOneTap />
         </div>
         <div className="">
-        {user?.displayName ? (
+        {user?.sub ? (
             <div className="flex flex-col gap-3">
             <motion.div
               whileHover={{ scale: 1.1 }}

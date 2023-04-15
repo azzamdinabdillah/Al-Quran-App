@@ -30,7 +30,7 @@ const SavedQuran = () => {
     setDataIdFolder,
   } = NewMainContext();
   let { user } = UserAuth();
-  console.log("datauer", user.uid);
+  console.log("datauer", user.sub);
 
   useEffect(() => {
     let collectionRef = collection(db, "folder");
@@ -38,7 +38,7 @@ const SavedQuran = () => {
     let queryRefCollectionQuran = query(
       collectionRef,
       where("list", "==", "alquran"),
-      where("user", "==", user.uid, "&&")
+      where("user", "==", user.sub, "&&")
     );
 
     getDocs(queryRefCollectionQuran).then((response) => {
@@ -60,7 +60,7 @@ const SavedQuran = () => {
     addDoc(collection(db, "folder"), {
       folderName: dataInputFolderRef.current.value,
       list: "alquran",
-      user: user.uid,
+      user: user.sub,
     });
     setIsOpen(false);
   };
@@ -129,7 +129,7 @@ const SavedQuran = () => {
       {/* modal untuk update folder */}
       {updateFolderModal === true ? <ModalUpdateFolder /> : ""}
 
-      <div className="md:ml-10">
+      <div className="fixed top-0 left-0 w-full z-20">
         <Navbar
           imgLeft={"/images/arrow-left.png"}
           appbarName={"Al Quran"}
@@ -140,7 +140,7 @@ const SavedQuran = () => {
         className={
           isOpen
             ? "blur-sm z-30 brightness-50 pt-24 md:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
-            : "blur-none z-30 pt-20 md:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
+            : "blur-none z-30 pt-20 md:pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
         }
       >
         <div className="">

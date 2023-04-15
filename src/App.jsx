@@ -20,7 +20,7 @@ function App() {
       <AuthContextProvider>
         <MainAppProvider>
           <section className="md:grid lg:grid-cols-7 md:grid-cols-8">
-            <div className="col-span-1">
+            <div className="md:col-span-1">
               <BottomNavbar />
             </div>
             <div className="col-span-7 lg:col-span-6">

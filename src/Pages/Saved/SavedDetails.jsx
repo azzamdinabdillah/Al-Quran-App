@@ -33,7 +33,7 @@ const SavedDetails = () => {
       collectionRef,
       where("folder", "==", id),
       where("list", "==", list, "&&"),
-      where("user", "==", user.uid, "&&")
+      where("user", "==", user.sub, "&&")
     );
 
     getDocs(queryRef).then((response) => {
@@ -52,21 +52,16 @@ const SavedDetails = () => {
 
   return (
     <>
-      <div className="md:px-10">
+      <div className="fixed top-0 left-0 w-full z-20">
         <Navbar
           imgLeft={"/images/arrow-left.png"}
           appbarName={`${dataSavedDetails}`}
           linkTo={list == "tafsir" ? "/saved/tafsir" : "/saved/alquran"}
         />
       </div>
-      <section className="pt-24 md:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
+      <section className="pt-24 md:pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
         <div className="">
-          {/* <div className="flex justify-start items-center gap-3">
-            <img src="./images/add-saved.png" alt="" className="w-[10%]" />
-            <p className="text-primary-blue font-semibold text-lg">
-              Tambah Folder Simpanan Baru
-            </p>
-          </div> */}
+          
           {loading ? (
             <>
               <Skeleton />

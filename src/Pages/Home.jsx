@@ -49,15 +49,15 @@ const Home = () => {
 
   return (
     <>
-      <div className="md:px-10">
-        <div className="">
+      <div className="md:px-11 lg:px-0 lg:relative lg:right-5">
+        <div className="fixed w-full z-20 top-0 left-0">
           <Navbar
             linkTo={""}
             imgLeft={"/images/menu.png"}
             appbarName={"Surat"}
           />
         </div>
-        <section className="pt-16 md:pt-0 w-full bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
+        <section className="pt-16 md:pt-10 w-full bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
           <div className="px-5">
             <motion.div
               animate={{
@@ -77,7 +77,7 @@ const Home = () => {
                   Assalamualaikum
                 </p>
                 <h1 className="text-dark-blue dark:text-white font-semibold text-2xl mt-1">
-                  {user ? user.displayName : "Hamba Allah"}
+                  {user ? user.name : "Hamba Allah"}
                 </h1>
               </div>
 
@@ -140,8 +140,8 @@ const Home = () => {
           </div>
 
           <div className="mt-10">
-            <div className="px-5">
-              <h1 className="font-bold text-primary-blue dark:text-white text-xl ">
+            <div className="">
+              <h1 className="font-bold text-primary-blue dark:text-white text-xl px-3">
                 Surat{" "}
               </h1>
             </div>
@@ -155,7 +155,7 @@ const Home = () => {
                 </div>
               ) : (
                 <motion.div
-                  className="md:grid grid-cols-2 lg:grid-cols-3"
+                  className="md:grid grid-cols-2 md:gap-3 lg:grid-cols-3 mt-5"
                   initial="hidden"
                   animate="visible"
                   variants={variantBox}
@@ -170,7 +170,7 @@ const Home = () => {
                     >
                       <Link
                         to={`/alquran/${row.namaLatin}/${row.nomor}/0`}
-                        className="my-3 mx-3 hover:bg-slate-50 flex justify-between items-center bg-white p-5 md:gap-10 rounded dark:bg-[#2B303B]"
+                        className="mx-3 mb-3 md:mb-0 md:mx-0 hover:bg-slate-50 flex justify-between items-center bg-white p-5 md:gap-0 rounded dark:bg-[#2B303B]"
                       >
                         <div className="flex items-center justify-start gap-5">
                           <div className="relative inline-block">
@@ -183,7 +183,7 @@ const Home = () => {
                             <h1 className="text-dark-blue dark:text-white font-medium text-lg">
                               {row.namaLatin}
                             </h1>
-                            <p className="text-light-gray text-base">
+                            <p className="text-light-gray text-base md:text-sm">
                               {row.tempatTurun} - {row.jumlahAyat} Ayat
                             </p>
                           </div>

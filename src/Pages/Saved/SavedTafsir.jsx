@@ -37,7 +37,7 @@ const SavedTafsir = () => {
     let queryRefCollectionQuran = query(
       collectionRef,
       where("list", "==", "tafsir"),
-      where("user", "==", user.uid, "&&")
+      where("user", "==", user.sub, "&&")
     );
 
     getDocs(queryRefCollectionQuran).then((response) => {
@@ -69,7 +69,7 @@ const SavedTafsir = () => {
     addDoc(collection(db, "folder"), {
       folderName: dataInputFolderRef.current.value,
       list: "tafsir",
-      user: user.uid
+      user: user.sub
     });
     setIsOpen(false);
   };
@@ -137,7 +137,7 @@ const SavedTafsir = () => {
       {/* modal untuk update folder */}
       {updateFolderModal === true ? <ModalUpdateFolder /> : ""}
 
-      <div className="md:ml-10">
+      <div className="fixed top-0 left-0 w-full z-20">
         <Navbar
           imgLeft={"/images/arrow-left.png"}
           appbarName={"Tafsir"}
@@ -148,7 +148,7 @@ const SavedTafsir = () => {
         className={
           isOpen
             ? "blur-sm z-30 brightness-50 pt-24 lg:pt-5 pb-28"
-            : "blur-none z-30 pt-24 lg:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
+            : "blur-none z-30 pt-24 lg:pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
         }
       >
         {/* <GoogleButton onClick={handleGoogleSignIn} /> */}
