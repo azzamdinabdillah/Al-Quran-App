@@ -14,7 +14,6 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { ModalConfirm, ModalUpdateFolder } from "./Modal";
 
 export const MenuDotThreeDetailsSaved = (props) => {
   let [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -83,13 +82,7 @@ export const MenuDotThreeDetailsSaved = (props) => {
 const MenuDotThree = (props) => {
   let [isOpenMenu, setIsOpenMenu] = useState(false);
   let {
-    isDeleteFolder,
     setIsDeleteFolder,
-    openConfirm,
-    setOpenConfirm,
-    confirm,
-    setConfirm,
-    updateFolderModal,
     setUpdateFolderModal,
   } = NewMainContext();
 
@@ -116,16 +109,6 @@ const MenuDotThree = (props) => {
       console.log("error bang, bentarrr", error);
     }
   };
-
-  // let updateFolderHandler = (even) => {
-  //   even.preventDefault();
-  //   updateDoc(doc(db, "folder", props.idFolder), {
-  //     folderName: "test2",
-  //   });
-  //   setUpdateFolderModal(false);
-  // };
-
-  // console.log("idfolder",props.idFolder);
 
   return (
     <div className="">

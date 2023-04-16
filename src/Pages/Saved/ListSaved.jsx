@@ -16,25 +16,21 @@ const ListSaved = () => {
 
   const { googleSignIn, logOut, user, setUser } = UserAuth();
 
-  const handleGoogleSignIn = () => {
-    try {
-      googleSignIn();
-    } catch (error) { 
-      console.log(error);
-    }
-  };
+  // const handleGoogleSignIn = () => {
+  //   try {
+  //     googleSignIn();
+  //   } catch (error) { 
+  //     console.log(error);
+  //   }
+  // };
 
-  const handleLogOut = () => {
-    try {
-      logOut();
-    } catch (error) {
-      console.log("bentar bang error", error);
-    }
-  }
-
-  let cobaLogout = () => {
-    googleLogout();
-  }
+  // const handleLogOut = () => {
+  //   try {
+  //     logOut();
+  //   } catch (error) {
+  //     console.log("bentar bang error", error);
+  //   }
+  // }
 
   const newLoginGoogle = (response) => {
     let token = response.credential;
@@ -108,7 +104,7 @@ const ListSaved = () => {
           </div>  
           ) : (
             <div className="">
-              <h1 className="text-center font-medium text-biru-tua capitalize text-lg dark:text-biru-muda ml-5">silahkan login terlebih dahulu untuk menyimpan data anda</h1>
+              <h1 className="text-center font-medium text-biru-tua capitalize text-lg dark:text-biru-muda md:ml-5">silahkan login terlebih dahulu untuk menyimpan data anda</h1>
             </div>
           )}
           

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Skeleton from "../components/Skeleton";
 import Quran from "/images/quran.png";
+import { ButtonForGoTop } from "../components/Button";
 
 const Tafsir = () => {
   let [surat, setSurat] = useState([]);
@@ -205,6 +206,10 @@ const Tafsir = () => {
         </div>
         <BottomNavbar />
       </section>
+
+      <div className="fixed z-40 bottom-24 left-5">
+        <ButtonForGoTop  />
+      </div>
     </div>
     </>
   );
