@@ -115,7 +115,7 @@ const TafsirDetails = () => {
         ) : (
           <div className="fixed top-0 left-0 w-full">
             <Navbar
-              linkTo={"/"}
+              linkTo={"/tafsir"}
               imgLeft={ArrowLeft}
               appbarName={data.namaLatin}
             />
@@ -197,7 +197,7 @@ const TafsirDetails = () => {
                   }}
                   className=""
                 >
-                  <div className="w-full bg-white hover:bg-opacity-70 dark:bg-[#2B303B] mt-3 py-7 px-5 rounded-md ">
+                  <div className="w-full bg-white hover:bg-opacity-70 dark:bg-[#2B303B] mt-3 py-7 px-5 rounded-md target:border-4 target:border-primary-blue">
                     <div className="">
                       <div className="flex justify-between items-center">
                         <p className="bg-[#403D58] dark:bg-[#5BC0EB] dark:text-black font-medium text-white px-3 py-1 rounded-md">

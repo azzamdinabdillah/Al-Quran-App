@@ -79,7 +79,7 @@ const SavedTafsir = () => {
       {/* modal tambah folder*/}
       {isOpen === true ? (
         <motion.div
-          className="w-[80%] left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
+          className="w-[80%] md:w-[50%] left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
           animate={
             isOpen
               ? {
@@ -145,17 +145,18 @@ const SavedTafsir = () => {
         />
       </div>
       <section
-        className={
-          isOpen
-            ? "blur-sm z-30 brightness-50 pt-24 lg:pt-5 pb-28"
-            : "blur-none z-30 pt-24 lg:pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
-        }
+        className="pt-20 md:pt-20 pb-28 lg:w-[50%] md:w-[60%] md:ml-10 lg:ml-0"
       >
+        <div className={
+          isOpen || updateFolderModal
+            ? "blur-sm brightness-50 h-screen w-screen bg-black fixed z-30 bg-opacity-40 left-0 top-0"
+            : "blur-none z-30 relative"
+        }></div>
         {/* <GoogleButton onClick={handleGoogleSignIn} /> */}
         <div className="">
           <div
             onClick={() => setIsOpen(true)}
-            className="flex justify-start items-center gap-3 mx-3 mb-5 px-3 bg-biru-muda py-3 rounded"
+            className="flex justify-start items-center gap-3 mx-3 mb-5 px-3 bg-biru-muda py-3 rounded cursor-pointer"
           >
             <FiFolderPlus className="text-[2rem] text-biru-terang" />
             <p className="text-primary-blue font-semibold text-lg">
@@ -215,11 +216,13 @@ const SavedTafsir = () => {
                         </div>
                       </div>
                     </Link>
+                    <div className="cursor-pointer">
                     <MenuDotThree
                       idFolder={row.id}
                       folderName={row.folderName}
                       list={"tafsir"}
                     />
+                    </div>
                   </motion.div>
                 ))
               )}

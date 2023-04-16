@@ -1,0 +1,15 @@
+{
+    "short_name": "My Quran",
+    "name": "Al-Quran apps",
+    "icons": [
+        {
+            "src": "/images/logo-2.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#FFFFFF"
+}

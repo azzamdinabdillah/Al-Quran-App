@@ -43,17 +43,6 @@ const Tafsir = () => {
     },
   };
   return (
-    // <section className="bg-[#EAF2EF] dark:bg-[#2F243A]">
-    //   <Navbar
-    //     appbarName={"Tafsir Surat"}
-    //     imgLeft={"./images/arrow-left.png"}
-    //     linkTo={"/"}
-    //   />
-    //   <div className="pt-20">
-    //     <h1>alsdalshjdasjkhd</h1>
-    //   </div>
-    //   <BottomNavbar />
-    // </section>
     <>
     <div className="md:px-5 lg:relative lg:right-5">
       <div className="fixed w-full z-20 left-0 top-0">
@@ -63,7 +52,7 @@ const Tafsir = () => {
           linkTo={"/"}
         />
       </div>
-      <section className="pt-10 md:px-8 md:pt-5 bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
+      <section className="pt-10 md:px-8 lg:px-0 md:pt-5 bg-[#EAF2EF] dark:bg-[#2F243A] -z-50">
         <div className="px-5">
           <motion.div
             animate={{
@@ -107,7 +96,7 @@ const Tafsir = () => {
         </div>
 
         <div className="mt-10"> 
-          <div className="px-5 lg:w-[40%]">
+          <div className="px-5 md:px-0 lg:w-[40%]">
             {finalDataLastRead == null ? (
               <div className="w-full rounded-lg relative bg-[#542E71]">
                 <div className="p-5">
@@ -154,7 +143,7 @@ const Tafsir = () => {
             )}
           </div>
           
-          <div className="mt-10">
+          <div className="mt-5">
             <div className="">
               <h1 className="font-bold text-primary-blue dark:text-white text-xl px-3">
                 Surat{" "}

@@ -223,7 +223,7 @@ const Surah = () => {
                         setOpen(true);
                         setSavedAyat(row.nomorAyat);
                       }}
-                      className="w-full hover:bg-opacity-70 bg-white dark:bg-[#2B303B] mt-3 py-7 px-5 rounded-md "
+                      className="w-full hover:bg-opacity-70 bg-white dark:bg-[#2B303B] mt-3 py-7 px-5 rounded-md target:border-4 target:border-primary-blue"
                     >
                       <div className="">
                         <div className="flex justify-between items-center">

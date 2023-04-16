@@ -139,7 +139,7 @@ const Home = () => {
             </motion.div>
           </div>
 
-          <div className="mt-10">
+          <div className="mt-5">
             <div className="">
               <h1 className="font-bold text-primary-blue dark:text-white text-xl px-3">
                 Surat{" "}

@@ -137,12 +137,13 @@ const SavedQuran = () => {
         />
       </div>
       <section
-        className={
-          isOpen
-            ? "blur-sm z-30 brightness-50 pt-24 md:pt-5 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
-            : "blur-none z-30 pt-20 md:pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10"
-        }
+        className="pt-20 md:pt-20 pb-28 lg:w-[50%] md:w-[60%] md:ml-10 lg:ml-0"
       >
+        <div className={
+          isOpen || updateFolderModal
+            ? "blur-sm brightness-50 h-screen w-screen bg-black fixed z-30 bg-opacity-40 left-0 top-0"
+            : "blur-none z-30 relative"
+        }></div>
         <div className="">
           <div
             onClick={() => setIsOpen(true)}

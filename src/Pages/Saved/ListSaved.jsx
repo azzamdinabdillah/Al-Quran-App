@@ -53,21 +53,8 @@ const ListSaved = () => {
           linkTo={"/"}
         />
       </div>
-      <section className="pt-24 md:pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10">
+      <section className="pt-24 md:pt-24 pb-28 lg:w-[50%] md:w-[60%] md:ml-10 lg:ml-0">
         <div className="pb-5 flex justify-center">
-          {/* {user?.credential ? (
-            <button onClick={handleLogOut} className="bg-biru-muda text-white font-medium px-10 py-3 rounded">Logout</button>
-          ) : (
-            <GoogleButton onClick={handleGoogleSignIn} />
-          )} */}
-          {/* {user?.credential ? (
-            <button onClick={cobaLogout} className="bg-biru-muda text-white font-medium px-10 py-3 rounded">Logout</button>
-          ) : (  
-          <GoogleLogin onSuccess={credentialResponse => {
-            setUser(credentialResponse);
-            console.log("datanya bang", credentialResponse);
-          }} onError={() => console.log("error bg")} auto_select="true" useOneTap />
-          )} */}
           <GoogleLogin onSuccess={newLoginGoogle} onError={() => console.log("error bg")} auto_select="true" useOneTap />
         </div>
         <div className="">
@@ -121,7 +108,7 @@ const ListSaved = () => {
           </div>  
           ) : (
             <div className="">
-              <h1 className="text-center font-medium text-biru-tua capitalize text-lg dark:text-biru-muda">silahkan login terlebih dahulu untuk menyimpan data anda</h1>
+              <h1 className="text-center font-medium text-biru-tua capitalize text-lg dark:text-biru-muda ml-5">silahkan login terlebih dahulu untuk menyimpan data anda</h1>
             </div>
           )}
           

@@ -23,7 +23,7 @@ const BottomNavbar = () => {
       style={{
         boxShadow: "1px -1px 10px -1px rgba(186,176,206,0.66)",
       }}
-      className="w-full fixed bottom-0 md:w-[15%] lg:w-[10%] md:top-0 md:left-0 bg-white md:shadow-none dark:bg-[#2B303B] z-40"
+      className="w-full fixed bottom-0 md:w-[15%] lg:w-[10%] md:top-0 md:left-0 bg-white md:shadow-none dark:bg-[#2B303B] z-40 dark:shadow-none"
     >
       <nav className="px-10 md:px-4 py-3 md:py-5">
         <h1 className="text-xl font-semibold hidden md:block dark:text-white">
@@ -41,7 +41,7 @@ const BottomNavbar = () => {
           >
             <div className="w-full">
               <div className="w-full">
-                <FaQuran className="text-primary-blue dark:text-biru-muda mx-auto text-[2rem]" />
+                <FaQuran className="text-primary-blue dark:text-white mx-auto text-[2rem]" />
                 <h1 className="w-full text-sm mt-2 text-light-gray font-medium">
                   Al-Quran
                 </h1>
@@ -60,7 +60,7 @@ const BottomNavbar = () => {
           >
             <div>
               <div className="w-full">
-                <GiWhiteBook className="text-primary-blue dark:text-biru-muda mx-auto text-[2rem]" />
+                <GiWhiteBook className="text-primary-blue dark:text-white mx-auto text-[2rem]" />
                 <h1 className="w-full text-sm mt-2 text-light-gray font-medium">
                   Tafsir
                 </h1>
@@ -79,7 +79,7 @@ const BottomNavbar = () => {
           >
             <div>
               <div className="w-full">
-                <BsFillBookmarkFill className="text-primary-blue dark:text-biru-muda mx-auto text-[2rem]" />
+                <BsFillBookmarkFill className="text-primary-blue dark:text-white mx-auto text-[2rem]" />
                 <h1 className="w-full text-sm mt-2 text-light-gray font-medium">
                   Bookmark
                 </h1>

@@ -169,7 +169,7 @@ const MenuDotThree = (props) => {
             className="flex items-center gap-2"
           >
             <AiOutlineDelete className="text-white dark:text-primary-blue dark:font-medium text-[1.5rem]" />
-            <h1 className="text-white dark:text-primary-blue dark:font-medium">Hapus</h1>
+            <h1 className="text-white dark:text-primary-blue dark:font-medium cursor-pointer">Hapus</h1>
           </motion.div>
           <motion.div
             onClick={() => setUpdateFolderModal(true)}
@@ -178,7 +178,7 @@ const MenuDotThree = (props) => {
             className="flex items-center gap-2"
           >
             <BiRename className="text-white dark:text-primary-blue dark:font-medium text-[1.5rem]" />
-            <h1 className="text-white dark:text-primary-blue dark:font-medium">Ubah Nama</h1>
+            <h1 className="text-white dark:text-primary-blue dark:font-medium cursor-pointer">Ubah Nama</h1>
           </motion.div>
         </div>
       </motion.div>

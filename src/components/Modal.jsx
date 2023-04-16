@@ -390,7 +390,7 @@ export const ModalUpdateFolder = (props) => {
 
   return (
     <motion.div
-      className="w-[80%] left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
+      className="w-[80%] md:w-[50%] left-1/2 -translate-x-1/2 mx-auto z-[60] fixed top-20 bg-[#EAF2EF] rounded-lg"
       animate={
         updateFolderModal
           ? {
