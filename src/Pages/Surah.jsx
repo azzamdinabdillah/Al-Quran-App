@@ -215,7 +215,7 @@ const Surah = () => {
                 className=""
               >
                 {ayat.map((row) => (
-                  <div className="cursor-pointer">
+                  <div className="cursor-pointer ">
                     <div
                     key={row.id}
                       id={row.nomorAyat}

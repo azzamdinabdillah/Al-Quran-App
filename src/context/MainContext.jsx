@@ -32,6 +32,7 @@ export const MainAppProvider = ({ children }) => {
   const animateProps = {
     mobile: {
       height: "40vh",
+      transform: "",
     },
     tablet: {
       height: "30vh",

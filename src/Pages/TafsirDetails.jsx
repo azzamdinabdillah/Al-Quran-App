@@ -13,6 +13,8 @@ import {
 } from "../components/Modal";
 import { NewMainContext } from "../context/MainContext";
 import Alert from "../components/Alert";
+import { AiFillCloseCircle } from "react-icons/ai";
+import { ButtonForGoTop } from "../components/Button";
 
 const TafsirDetails = () => {
   let [data, setData] = useState([]);
@@ -20,6 +22,13 @@ const TafsirDetails = () => {
   let { namaSurat, id, tafsirSaved } = useParams();
   let [savedTafsir, setSavedTafsir] = useState("");
   let [loading, setLoading] = useState(true);
+  let [expandText, setExpandText] = useState(false);
+  let [loncatAyat, setLoncatAyat] = useState("");
+
+  let [idPerRow, setIdPerRow] = useState();
+  let [openModalBacaLengkap, setOpenModalBacaLengkap] = useState();
+  let [dataBacaLengkap, setDataBacaLengkap] = useState();
+
   let {
     open,
     setOpen,
@@ -72,20 +81,61 @@ const TafsirDetails = () => {
     }, 10000);
   }, []);
 
+  let loncatAyatHandler = (even) => {
+    setLoncatAyat(even.target.value);
+  };
+
+  const NewExpandTextHandler = ({ DataidText }) => {
+    let idRow = DataidText - 1;
+
+    let data = tafsir[idRow].teks;
+    // console.log(data);
+
+    return (
+      <motion.div
+        className="text-base fixed left-1/2 md:left-[56%] -translate-x-1/2 top-[40%] md:top-[30%] -translate-y-1/2 bg-white z-50 rounded-lg leading-relaxed"
+        animate={{ opacity: 1 }}
+        initial={{ opacity: 0 }}
+      >
+        <div className="p-5 overflow-y-scroll h-[50vh] w-[90vw] md:w-[75vw]">
+          {/* <div className="absolute -top-5 right-0 overflow-visible">
+        <AiFillCloseCircle className="text-5xl text-primary-blue" />
+      </div> */}
+          <div>
+            <h1 className="font-medium mb-1 text-lg text-primary-blue">
+              Tafsir Lengkap :
+            </h1>
+            {data}
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
+
   return (
     <>
+      {/* Modal untuk baca selengkapnya */}
+      {openModalBacaLengkap ? (
+        <NewExpandTextHandler DataidText={idPerRow} />
+      ) : (
+        ""
+      )}
+
       {alert ? <Alert message={"Berhasil ditambahkan"} /> : ""}
 
       {/* modal choose folder*/}
       {chooseFolder === true ? (
-        (user?.sub) ? <ModalMenuFolder
-        savedTafsir={savedTafsir}
-        namaSurat={namaSurat}
-        idTafsir={id}
-        whereList={"tafsir"}
-        user={user.sub}
-      /> :
-      <Alert message={"Silahkan Login Terlebih Dahulu"} />
+        user?.sub ? (
+          <ModalMenuFolder
+            savedTafsir={savedTafsir}
+            namaSurat={namaSurat}
+            idTafsir={id}
+            whereList={"tafsir"}
+            user={user.sub}
+          />
+        ) : (
+          <Alert message={"Silahkan Login Terlebih Dahulu"} />
+        )
       ) : (
         ""
       )}
@@ -98,14 +148,13 @@ const TafsirDetails = () => {
       )}
 
       {/* modal bottom menu */}
-      <ModalMenu menu1={"Tafsir"} lastReadMenu="tafsir" namaSurat={namaSurat} savedSurat={savedTafsir} id={id} />
-      {/* <ModalMenu
+      <ModalMenu
         menu1={"Tafsir"}
+        lastReadMenu="tafsir"
         namaSurat={namaSurat}
-        savedSurat={savedAyat}
+        savedSurat={savedTafsir}
         id={id}
-        list="surah"
-      /> */}
+      />
 
       <div className="">
         {loading ? (
@@ -126,16 +175,33 @@ const TafsirDetails = () => {
         onClick={() => {
           open ? setOpen(false) : "";
           chooseFolder ? setChooseFolder(false) : "";
+          openModalBacaLengkap ? setOpenModalBacaLengkap(false) : "";
         }}
         id="top"
       >
         {/* penggelap saat ada modal */}
-        <div className={
-          open || openModalFromSaved || chooseFolder
-            ? "blur-sm brightness-50 h-screen w-screen bg-black fixed z-30 bg-opacity-40 left-0 top-0"
-            : "blur-none z-30 relative"
-        }></div>
+        <div
+          className={
+            open || openModalFromSaved || chooseFolder || openModalBacaLengkap
+              ? "blur-sm brightness-50 h-screen w-screen bg-black fixed z-30 bg-opacity-40 left-0 top-0 right-0 bottom-0"
+              : "blur-none z-30 relative"
+          }
+        ></div>
         <div>
+        <div className="md:mt-28 mt-24 w-[95%] md:w-[70%] mx-3 md:mx-auto flex justify-start items-center gap-2">
+            <input
+              onChange={loncatAyatHandler}
+              placeholder={"Loncat Ke Ayat 1 - " + data.jumlahAyat}
+              type="number"
+              className="py-2 rounded text-black font-medium w-full px-5"
+            />
+            <a
+              href={"#" + loncatAyat}
+              className="text-white py-2 px-5 rounded bg-biru-tua dark:bg-biru-muda"
+            >
+              Loncat
+            </a>
+          </div>
           {loading ? (
             <SkeletonDetails />
           ) : (
@@ -144,31 +210,7 @@ const TafsirDetails = () => {
               initial={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
               className="mt-3"
-            >
-              {/* <div className="w-full overflow-hidden rounded-lg relative shadow-primary-blue bg-[#542E71]">
-                <div className="px-5 py-10">
-                  <div className="">
-                    <h1 className="font-medium text-white text-2xl text-center">
-                      {data.namaLatin}
-                    </h1>
-                    <p className="text-center text-white mt-2">{data.arti}</p>
-
-                    <hr className="w-[70%] mx-auto my-5" />
-
-                    <p className="text-center text-white mt-2 font-medium text-lg">
-                      {data.tempatTurun} - {data.jumlahAyat} ayat
-                    </p>
-                    <img src={Bismillah} alt="" className="mx-auto mt-5" />
-
-                  </div>
-                </div>
-                <img
-                  src={Book}
-                  alt=""
-                  className="absolute bottom-5 right-10 opacity-10 scale-150"
-                />
-              </div> */}
-            </motion.div>
+            ></motion.div>
           )}
 
           {loading ? (
@@ -181,23 +223,30 @@ const TafsirDetails = () => {
               <SkeletonDetails />
             </div>
           ) : (
+            
             <motion.div
               animate={{ opacity: 1 }}
               initial={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="md:grid md:grid-cols-2 gap-x-3 mt-20 mx-3 md:mt-20 md:mx-10"
+              className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-x-3 mx-3 md:mx-10"
             >
               {tafsir.map((row) => (
                 <div
                   id={row.ayat}
                   key={row.id}
-                  onClick={() => {
-                    setOpen(true);
-                    setSavedTafsir(row.ayat);
-                  }}
-                  className=""
+                  // onClick={() => {
+                  //   setOpen(true);
+                  //   setSavedTafsir(row.ayat);
+                  // }}
+                  className="cursor-pointer group target:border-4 target:border-primary-blue"
                 >
-                  <div className="w-full bg-white hover:bg-opacity-70 dark:bg-[#2B303B] mt-3 py-7 px-5 rounded-md target:border-4 target:border-primary-blue">
+                  <div
+                    className="w-full bg-white hover:bg-opacity-70 dark:bg-[#2B303B] mt-3 pt-7 px-5 rounded-t-md target:border-4 target:border-primary-blue"
+                    onClick={() => {
+                      setOpen(true);
+                      setSavedTafsir(row.ayat);
+                    }}
+                  >
                     <div className="">
                       <div className="flex justify-between items-center">
                         <p className="bg-[#403D58] dark:bg-[#5BC0EB] dark:text-black font-medium text-white px-3 py-1 rounded-md">
@@ -205,10 +254,20 @@ const TafsirDetails = () => {
                         </p>
                       </div>
                       <p className="text-start leading-relaxed text-base dark:text-white mt-3">
-                        {row.teks}
+                        {row.teks.slice(0, 300) + " . . ."}
                       </p>
                     </div>
                   </div>
+                  <button
+                    onClick={() => {
+                      setIdPerRow(row.ayat);
+                      setOpenModalBacaLengkap(!openModalBacaLengkap);
+                    }}
+                    className="text-blue-400 underline cursor-pointer hover:no-underline bg-white block px-5 pb-7 pt-1 rounded-b-md group-hover:bg-opacity-70 w-full text-start"
+                  >
+                    {" "}
+                    Baca Selengkapnya
+                  </button>
                 </div>
               ))}
             </motion.div>
@@ -216,6 +275,9 @@ const TafsirDetails = () => {
         </div>
       </section>
       <BottomNavbar />
+      <div className="fixed z-40 bottom-24 left-5">
+        <ButtonForGoTop />
+      </div>
     </>
   );
 };

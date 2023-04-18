@@ -249,7 +249,7 @@ export const ModalMenu = (props) => {
   }
   return (
     <motion.div
-      className="w-full md:w-[50%] rounded-t-3xl z-50 fixed bottom-0 md:left-1/2 md:-translate-x-1/2 md:top-1/2 md:-translate-y-1/2 bg-[#EAF2EF] md:rounded-lg"
+      className="w-full md:w-[50%] rounded-t-3xl z-50 fixed bottom-0 md:left-1/2 md:-translate-x-1/2 md:top-1/2 md:-translate-y-1/2 bg-[#EAF2EF] md:rounded-lg lg:left-1/2 lg:-translate-x-[50%]"
       animate={
         open
           ? lebarLayar >= 768 && lebarLayar <= 1024
