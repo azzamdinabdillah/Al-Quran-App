@@ -221,6 +221,15 @@ const TafsirDetails = () => {
               <SkeletonDetails />
               <SkeletonDetails />
               <SkeletonDetails />
+              <SkeletonDetails />
+              <SkeletonDetails />
+              <SkeletonDetails />
+              <SkeletonDetails />
+              <SkeletonDetails />
+              <SkeletonDetails />
+              <SkeletonDetails />
+              <SkeletonDetails />
+              <SkeletonDetails />
             </div>
           ) : (
             
@@ -228,7 +237,7 @@ const TafsirDetails = () => {
               animate={{ opacity: 1 }}
               initial={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-x-3 mx-3 md:mx-10"
+              className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-3 mx-3 md:mx-10"
             >
               {tafsir.map((row) => (
                 <div
@@ -238,10 +247,10 @@ const TafsirDetails = () => {
                   //   setOpen(true);
                   //   setSavedTafsir(row.ayat);
                   // }}
-                  className="cursor-pointer group target:border-4 target:border-primary-blue"
+                  className="cursor-pointer group target:border-4 target:border-primary-blue bg-white hover:bg-opacity-70 dark:bg-[#2B303B] mt-3 md:mt-0 py-7 px-5 rounded-md"
                 >
                   <div
-                    className="w-full bg-white hover:bg-opacity-70 dark:bg-[#2B303B] mt-3 pt-7 px-5 rounded-t-md target:border-4 target:border-primary-blue"
+                    className="w-full "
                     onClick={() => {
                       setOpen(true);
                       setSavedTafsir(row.ayat);
@@ -263,7 +272,7 @@ const TafsirDetails = () => {
                       setIdPerRow(row.ayat);
                       setOpenModalBacaLengkap(!openModalBacaLengkap);
                     }}
-                    className="text-blue-400 underline cursor-pointer hover:no-underline bg-white block px-5 pb-7 pt-1 rounded-b-md group-hover:bg-opacity-70 w-full text-start"
+                    className="text-blue-400 underline cursor-pointer hover:no-underline bg-transparent dark:bg-[#2B303B] pt-1 rounded-b-md group-hover:bg-opacity-70 w-full text-start"
                   >
                     {" "}
                     Baca Selengkapnya

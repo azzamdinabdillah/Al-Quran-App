@@ -30,7 +30,6 @@ const SavedQuran = () => {
     setDataIdFolder,
   } = NewMainContext();
   let { user } = UserAuth();
-  console.log("datauer", user.sub);
 
   useEffect(() => {
     let collectionRef = collection(db, "folder");

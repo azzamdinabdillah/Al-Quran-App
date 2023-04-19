@@ -206,6 +206,14 @@ const Surah = () => {
                 <SkeletonDetails />
                 <SkeletonDetails />
                 <SkeletonDetails />
+                <SkeletonDetails />
+                <SkeletonDetails />
+                <SkeletonDetails />
+                <SkeletonDetails />
+                <SkeletonDetails />
+                <SkeletonDetails />
+                <SkeletonDetails />
+                <SkeletonDetails />
               </div>
             ) : (
               <motion.div

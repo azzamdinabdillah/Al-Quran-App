@@ -157,6 +157,19 @@ const Tafsir = () => {
                   <Skeleton />
                   <Skeleton />
                   <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
                 </div>
               ) : (
                 <motion.div

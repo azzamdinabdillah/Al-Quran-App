@@ -152,6 +152,7 @@ export const ModalMenuFolder = (props) => {
             ) : (
               folder.map((row) => (
                 <button
+                key={row.id}
                   onClick={() => {
                     addDoc(collection(db, "saved"), {
                       ayat: props.savedTafsir,

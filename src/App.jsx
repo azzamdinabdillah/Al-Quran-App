@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import BottomNavbar from "./components/BottomNavbar";
 import { AuthContextProvider } from "./context/AuthContext";
@@ -24,25 +24,27 @@ function App() {
               <BottomNavbar />
             </div>
             <div className="col-span-7 lg:col-span-6">
-              <Routes>
-                <Route path="/:lastSurat?/:lastAyat?" element={<Home />} />
-                <Route
-                  path="/alquran/:namaSurat/:id/:ayatSaved"
-                  element={<Surah />}
-                />
-                <Route path="/tafsir" element={<Tafsir />} />
-                <Route path="/saved/tafsir" element={<SavedTafsir />} />
-                <Route
-                  path="/tafsir/:namaSurat/:id/:tafsirSaved"
-                  element={<TafsirDetails />}
-                />
-                <Route path="/saved" element={<ListSaved />} />
-                <Route path="/saved/alquran" element={<SavedQuran />} />
-                <Route
-                  path="/saved/:list/:id"
-                  element={<SavedQuranDetails />}
-                />
-              </Routes>
+                <Routes>
+                  <Route path="/:lastSurat?/:lastAyat?" element={<Home />} />
+                  <Route
+                    path="/alquran/:namaSurat/:id/:ayatSaved"
+                    element={<Surah />}
+                  />
+                  <Route path="/tafsir" element={<Tafsir />} />
+                  <Route path="/saved/tafsir" element={<SavedTafsir />} />
+                  <Route
+                    path="/tafsir/:namaSurat/:id/:tafsirSaved"
+                    element={<TafsirDetails />}
+                  />
+                  <Route path="/saved" element={<ListSaved />} />
+                  <Route path="/saved/alquran" element={<SavedQuran />} />
+                  <Route
+                    path="/saved/:list/:id"
+                    element={<SavedQuranDetails />}
+                  />
+                </Routes>
+              {/* <BrowserRouter>
+              </BrowserRouter> */}
             </div>
           </section>
         </MainAppProvider>

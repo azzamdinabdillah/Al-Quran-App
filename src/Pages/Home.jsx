@@ -23,7 +23,8 @@ const Home = () => {
   let savedData = localStorage.getItem("savedData");
   let finalDataLastRead = JSON.parse(savedData);
 
-  console.log("data bang",user);
+  // console.log("data bang",user);
+  // console.log("env bang", import.meta.env.VITE_FIREBASE_API_KEY);
 
   const variantBox = {
     hidden: {
@@ -148,6 +149,19 @@ const Home = () => {
             <div className="">
               {loading ? (
                 <div className="pb-10">
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
                   <Skeleton />
                   <Skeleton />
                   <Skeleton />
