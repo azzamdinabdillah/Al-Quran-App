@@ -16,7 +16,8 @@ module.exports = {
         "light-gray": "#8789A3",
       },
       fontFamily:{
-        "arabic": ["Scheherazade New", "serif"]
+        // "arabic": ["Scheherazade New", "serif"]
+        "arabic": ["Amiri", "serif"]
       }
     },
   },
